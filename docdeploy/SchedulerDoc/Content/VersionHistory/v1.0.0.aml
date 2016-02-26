@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="4fac9b80-285e-4966-9fc1-380f507960fc" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Version 1.0.0 was released on 2016-02-26.</para>
+		</introduction>
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Initial release.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="23ac6050-6fc6-421c-9e6c-b5aa9df44e9f" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

@@ -1,0 +1,1 @@
+PowerShell.exe -ExecutionPolicy Unrestricted -File .\MakeReleaseZip.ps1

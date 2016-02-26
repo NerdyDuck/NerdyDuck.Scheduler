@@ -1,0 +1,12 @@
+﻿{
+  "dependencies": {
+    "NerdyDuck.CodedExceptions": "1.1.2",
+    "NerdyDuck.Collections": "1.0.1"
+  },
+  "frameworks": {
+    ".NETFramework,Version=v4.6": {}
+  },
+  "runtimes": {
+    "win": {}
+  }
+}

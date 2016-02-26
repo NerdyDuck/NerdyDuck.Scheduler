@@ -1,0 +1,441 @@
+﻿<#
+/*******************************************************************************
+ * <copyright file="Resources.tt" owner="Daniel Kopp">
+ * Copyright 2015-2016 Daniel Kopp
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * </copyright>
+ * <author name="Daniel Kopp" email="dak@nerdyduck.de" />
+ * <file name="Resources.tt" date="2015-09-30">
+ * Creates a strongly typed accessor class for a .resw resource file in the
+ * same project, that can be used for both universal and desktop type projects.
+ * The template file must have the same name as the resource file. The
+ * namespace of the created class is dependent on the location of the template
+ * file in the project.
+ * </file>
+ * <acknowledgement>
+ * Inspired by Kenneth Baltrinic's T4Resx project:
+ * http://blog.baltrinic.com/software-development/dotnet/t4-template-replace-resxfilecodegenerator
+ * Some parts derived from T4MVC template distributed under the MvcContrib
+ * license (http://mvccontrib.codeplex.com/license)
+ * </acknowledgement>
+ ******************************************************************************/
+#>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="cs" #>
+<#@ assembly name="Microsoft.VisualStudio.Shell.Interop.8.0" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ assembly name="VSLangProj" #>
+<#@ import namespace="Microsoft.VisualStudio.Shell.Interop" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.Xml" #>
+<#
+// Local variables
+string TemplateName = string.Empty;
+string TemplateDirectory = string.Empty;
+string ProjectFilePath = string.Empty;
+string ProjectDirectory = string.Empty;
+string NeutralResourcesLanguage = string.Empty;
+string RootNamespace = string.Empty;
+string ResourceNamespace = string.Empty;
+string ResourcePath = string.Empty;
+List<ResourceEntry> ResourceEntries = null;
+
+// Get name and directory of template file
+TemplateDirectory = Path.GetDirectoryName(Host.TemplateFile);
+TemplateName = Path.GetFileNameWithoutExtension(Host.TemplateFile);
+
+// Try to find the project file
+ProjectFilePath = FindProjectFile(TemplateDirectory);
+if (ResourcePath == null)
+{
+	Error("No project file found.");
+	return "No project file found.";
+}
+ProjectDirectory = Path.GetDirectoryName(ProjectFilePath);
+
+// Try to get the root namespace from project file
+RootNamespace = GetRootNamespace(ProjectFilePath);
+if (RootNamespace == null)
+{
+	Error("No root namespace found.");
+	return "No root namespace found.";
+}
+
+// Try to get NeutralResourcesLanguageAttribute from AssemblyInfo.cs
+NeutralResourcesLanguage = GetNeutralResourcesLanguage(ProjectDirectory);
+if (NeutralResourcesLanguage == null)
+{
+	NeutralResourcesLanguage = string.Empty;
+}
+
+// Combine root namespace and template subdirectory relative to project directory to create resource namespace
+ResourceNamespace = GetResourceNamespace(ProjectDirectory, TemplateDirectory, RootNamespace);
+
+// Try to find the resource file in the project.
+// The file must have the same name as the template, and if a NeutralResourcesLanguageAttribute is set,
+// the file must reside in a folder named like the neutral resources language
+ResourcePath = FindResourceFile(ProjectDirectory, TemplateName, NeutralResourcesLanguage);
+if (ResourcePath == null)
+{
+	Error("No matching resource file found.");
+	return "No matching resource file found.";
+}
+
+// Try to read the resource file
+ResourceEntries = GetResourceEntries(ResourcePath);
+
+// Here comes the template:
+#>
+#region Copyright
+/*******************************************************************************
+ * <copyright file="<#= TemplateName #>.cs" owner="Daniel Kopp">
+ * Copyright 2015-2016 Daniel Kopp
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * </copyright>
+ * <author name="Daniel Kopp" email="dak@nerdyduck.de" />
+ * <assembly name="NerdyDuck.Scheduler">
+ * Task scheduler for .NET with variable schedules.
+ * </assembly>
+ * <file name="<#= TemplateName #>.cs" date="<#= DateTime.Now.ToString("yyyy-MM-dd") #>">
+ * Helper class to access localized string resources.
+ * </file>
+ ******************************************************************************/
+#endregion
+
+using System;
+
+namespace <#= ResourceNamespace #>
+{
+	/// <summary>
+	/// Helper class to access localized string resources.
+	/// </summary>
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("<#= Path.GetFileName(Host.TemplateFile) #>", "1.0.0.0")]
+	[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+	internal static class <#= TemplateName #>
+	{
+		#region String resource properties<#
+		foreach (ResourceEntry entry in ResourceEntries)
+		{
+			// Clean the comment up a bit so it doesn't break the xml comment frame.
+			string Comment = entry.Comment.Replace("\r\n", "\r\n\t\t/// ");
+			Comment = Comment.Replace("&", "&amp;");
+			Comment = Comment.Replace("<", "&lt;");
+			Comment = Comment.Replace(">", "&gt;");
+#>
+
+		/// <summary>
+		/// <#= Comment #>
+		/// </summary>
+		internal static string <#= entry.Identifier #>
+		{
+			get { return GetResource("<#= entry.Name #>"); }
+		}
+<#
+		}
+#>		#endregion
+
+#if WINDOWS_UWP
+		#region Private fields
+		private static Windows.ApplicationModel.Resources.Core.ResourceMap mResourceMap;
+		private static Windows.ApplicationModel.Resources.Core.ResourceContext mContext;
+		#endregion
+
+		#region Properties
+		/// <summary>
+		/// Gets the main resource map of the assembly.
+		/// </summary>
+		internal static Windows.ApplicationModel.Resources.Core.ResourceMap ResourceMap
+		{
+			get
+			{
+				if (object.ReferenceEquals(mResourceMap, null))
+				{
+					mResourceMap = Windows.ApplicationModel.Resources.Core.ResourceManager.Current.MainResourceMap;
+				}
+
+				return mResourceMap;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the resource context to use when retrieving resources.
+		/// </summary>
+		internal static Windows.ApplicationModel.Resources.Core.ResourceContext Context
+		{
+			get { return mContext; }
+			set { mContext = value; }
+		}
+		#endregion
+
+		#region Methods
+		/// <summary>
+		/// Retrieves a string resource using the resource map.
+		/// </summary>
+		/// <param name="name">The name of the string resource.</param>
+		/// <returns>A localized string.</returns>
+		internal static string GetResource(string name)
+		{
+			Windows.ApplicationModel.Resources.Core.ResourceContext context = Context;
+			if (context == null)
+			{
+				context = Windows.ApplicationModel.Resources.Core.ResourceContext.GetForViewIndependentUse();
+			}
+
+			Windows.ApplicationModel.Resources.Core.ResourceCandidate resourceCandidate = ResourceMap.GetValue("<#= RootNamespace #>/<#= TemplateName #>/" + name, context);
+
+			if (resourceCandidate == null)
+			{
+				throw new ArgumentOutOfRangeException(nameof(name));
+			}
+
+			return resourceCandidate.ValueAsString;
+		}
+		#endregion
+#endif
+
+#if WINDOWS_DESKTOP
+		#region Private fields
+		private static System.Resources.ResourceManager mResourceManager;
+		private static System.Globalization.CultureInfo mResourceCulture;
+		#endregion
+
+		#region Properties
+		/// <summary>
+		/// Returns the cached ResourceManager instance used by this class.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+		internal static System.Resources.ResourceManager ResourceManager
+		{
+			get
+			{
+				if (object.ReferenceEquals(mResourceManager, null))
+				{
+					System.Resources.ResourceManager temp = new System.Resources.ResourceManager("<#= ResourceNamespace #>.<#= TemplateName #>", typeof(<#= TemplateName #>).Assembly);
+					mResourceManager = temp;
+				}
+				return mResourceManager;
+			}
+		}
+
+		/// <summary>
+		/// Overrides the current thread's CurrentUICulture property for all resource lookups using this strongly typed resource class.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+		internal static System.Globalization.CultureInfo Culture
+		{
+			get { return mResourceCulture; }
+			set { mResourceCulture = value; }
+		}
+		#endregion
+
+		#region Methods
+		/// <summary>
+		/// Retrieves a string resource using the resource manager.
+		/// </summary>
+		/// <param name="name">The name of the string resource.</param>
+		/// <returns>A localized string.</returns>
+		internal static string GetResource(string name)
+		{
+			return ResourceManager.GetString(name, mResourceCulture);
+		}
+		#endregion
+#endif
+	}
+}
+<#+
+// Attempts to find a .csproj file, starting from child directory (possibly the root directory) of the project, moving up the directory hierarchy.
+private string FindProjectFile(string childDirectory)
+{
+	if (childDirectory == null)
+	{
+		// Last directory was already the path root, still no project file found.
+		return null;
+	}
+
+	string[] ProjectFiles = Directory.GetFiles(childDirectory, "*.csproj");
+	if (ProjectFiles.Length == 0)
+	{
+		// No project file in this directory, try the parent directory.
+		return FindProjectFile(Directory.GetParent(childDirectory).FullName);
+	}
+
+	// Project file found (more than one file unlikely)
+	return ProjectFiles[0];
+}
+
+// Get the resource namespace by taking the relative path of the template directory to the project directory, and adding it to the root namespace.
+private string GetResourceNamespace(string projectDirectory, string templateDirectory, string rootNamespace)
+{
+	string ReturnValue = rootNamespace;
+	// Check that project and template are in the same folder structure at all, and that the template is not in the base project directory
+	if (templateDirectory.StartsWith(projectDirectory) && templateDirectory.Length > projectDirectory.Length)
+	{
+		// Extract the relative path of the template directory, remove leading and trailing \s
+		string TempPath = templateDirectory.Substring(projectDirectory.Length, templateDirectory.Length - projectDirectory.Length).Trim();
+		while (TempPath.StartsWith("\\"))
+		{
+			TempPath = TempPath.Remove(0, 1);
+		}
+		while (TempPath.EndsWith("\\"))
+		{
+			TempPath = TempPath.Substring(TempPath.Length - 1);
+		}
+		if (!string.IsNullOrWhiteSpace(TempPath))
+		{
+			// Replace slashes and spaces, and add it to the root namespace.
+			ReturnValue = rootNamespace + "." + TempPath.Replace('\\', '.').Replace(' ', '_');
+		}
+	}
+	return ReturnValue;
+}
+
+// Gets the project's root namespace from a .csproj file
+private string GetRootNamespace(string fileName)
+{
+	string ReturnValue = null;
+	XmlDocument doc = new XmlDocument();
+	doc.Load(fileName);
+	XmlNamespaceManager mgr = new XmlNamespaceManager(doc.NameTable);
+	mgr.AddNamespace("x", "http://schemas.microsoft.com/developer/msbuild/2003");
+	XmlNode NamespaceNode = doc.DocumentElement.SelectSingleNode("//x:RootNamespace", mgr);
+	if (NamespaceNode != null)
+	{
+		ReturnValue = NamespaceNode.InnerText;
+	}
+
+	return ReturnValue;
+}
+
+// Gets the NeutralResourcesLanguageAttribute from a AssemblyInfo.cs file in the project.
+private string GetNeutralResourcesLanguage(string projectDirectory)
+{
+	// Search all directories recursively
+	string[] AssemblyInfoFiles = Directory.GetFiles(projectDirectory, "AssemblyInfo.cs", SearchOption.AllDirectories);
+	if (AssemblyInfoFiles.Length == 0)
+	{
+		return null;
+	}
+
+	// Read the first file (more than one unlikely) and find the NeutralResourcesLanguageAttribute
+	string[] Lines = File.ReadAllLines(AssemblyInfoFiles[0]);
+	foreach (string line in Lines)
+	{
+		int Pos = line.IndexOf("NeutralResourcesLanguage");
+		if (Pos > -1)
+		{
+			Pos = line.IndexOf("\"", Pos);
+			if (Pos > -1)
+			{
+				Pos++;
+				int EndPos = line.IndexOf("\"", Pos);
+				return line.Substring(Pos, EndPos - Pos);
+			}
+		}
+	}
+	return null;
+}
+
+// Finds the resource file with the specified name in the project
+private string FindResourceFile(string projectDirectory, string baseFileName, string neutralResourcesLanguage)
+{
+	// Search the project recursively
+	string[] ResourceFiles = Directory.GetFiles(projectDirectory, baseFileName + ".resw", SearchOption.AllDirectories);
+
+	// If a neutral resources language was found in AssemblyInfo, try to find that one
+	foreach (string fileName in ResourceFiles)
+	{
+		if (string.IsNullOrEmpty(neutralResourcesLanguage))
+			return fileName;
+		else if (Path.GetDirectoryName(fileName).EndsWith(neutralResourcesLanguage))
+			return fileName;
+	}
+	return null;
+}
+
+// Reads all entries in a resw file (name, value, comment)
+private List<ResourceEntry> GetResourceEntries(string fileName)
+{
+	List<ResourceEntry> ReturnValue = new List<ResourceEntry>();
+	XmlDocument doc = new XmlDocument();
+	doc.Load(fileName);
+	XmlNodeList DataNodes = doc.DocumentElement.SelectNodes("//data");
+
+	foreach (XmlElement dataElement in DataNodes)
+	{
+		ResourceEntry entry = new ResourceEntry
+		{
+			Name = dataElement.Attributes["name"].Value,
+			// Create a valid identifier
+			Identifier = CheckIdentifier(dataElement.Attributes["name"].Value)
+		};
+		XmlNode valueElement = dataElement.SelectSingleNode("value");
+		if (valueElement != null)
+			entry.Value = valueElement.InnerText;
+		XmlNode commentElement = dataElement.SelectSingleNode("comment");
+		if (commentElement != null)
+			entry.Comment = commentElement.InnerText;
+
+		if (entry.Comment == null)
+		{
+			// Create a default comment
+			entry.Comment = string.Format("Gets a localized string similar to \"{0}\".", entry.Value);
+		}
+
+		ReturnValue.Add(entry);
+	}
+
+	return ReturnValue;
+}
+
+// Modifies a resource entry name so it is a valid C# property name
+private string CheckIdentifier(string name)
+{
+	// Step one: only Ascii letters, numbers, dash, dot and underscore allowed
+	string ReturnValue = Regex.Replace(name, @"[^A-Za-z0-9-._]", "_");
+	// Step two: property name may not begin with numbers, slashes and dots, so prefix a underscore
+	if (Regex.IsMatch(ReturnValue, @"^[0-9-.]"))
+		ReturnValue = "_" + ReturnValue;
+	return ReturnValue;
+}
+
+// Container for entries read from a .resw file
+struct ResourceEntry
+{
+	// The name of the entry
+	public string Name { get; set; }
+	// The name used for the property generated for the entry. Usually equal to Name.
+	public string Identifier { get; set; }
+	// The value of the entry, e.g. the localized text.
+	public string Value { get; set; }
+	// The comment of the entry
+	public string Comment { get; set; }
+}
+#>
