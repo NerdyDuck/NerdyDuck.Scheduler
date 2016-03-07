@@ -24,5 +24,8 @@ The neutral resource language for all texts is English (en-US). Currently, the o
 For examples and a complete class reference, please see the [Wiki](../../wiki/). :exclamation: **Work in progress**.
 
 #### History
+##### 2016-03-07 / v1.0.1 / DAK
+- Switched `IXmlSerializable` interfaces in `Schedule`, `ScheduledTask&lt;T&gt;` and `ScheduledActionBase` from public access to explicit interface implementation, where appropriate.
+
 ##### 2016-02-26 / v1.0.0 / DAK
 - First release.

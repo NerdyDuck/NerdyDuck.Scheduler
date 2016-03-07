@@ -10,7 +10,14 @@
 				<para>Select a version below to see a description of its changes.</para>
 				<list class="bullet">
 					<listItem>
-						<para><link xlink:href="4fac9b80-285e-4966-9fc1-380f507960fc" /></para>
+						<para>
+							<link xlink:href="21b8ebba-abfa-48be-bfb6-cd62fddcc07a" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="4fac9b80-285e-4966-9fc1-380f507960fc" />
+						</para>
 					</listItem>
 				</list>
 			</content>

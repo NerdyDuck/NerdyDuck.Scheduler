@@ -27,11 +27,7 @@
 
 using NerdyDuck.CodedExceptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -43,15 +39,13 @@ namespace NerdyDuck.Scheduler
 	/// </summary>
 	/// <typeparam name="T">The type of action that is executed by the task.</typeparam>
 	[XmlRoot(ElementName = RootName, Namespace = Schedule.Namespace)]
-	public class ScheduledTask<T> : IDisposable, IXmlSerializable where T : ScheduledActionBase, new()
+	public sealed class ScheduledTask<T> : IDisposable, IXmlSerializable where T : ScheduledActionBase, new()
 	{
 		#region Constants
-		private const string RootName = "scheduledTask";
+		internal const string RootName = "scheduledTask";
 		private const string IsEnabledName = "isEnabled";
 		private const string LastStartTimeName = "lastStartTime";
 		private const string LastEndTimeName = "lastEndTime";
-		private const string ScheduleName = "schedule";
-		private const string ActionName = "action";
 		#endregion
 
 		#region Private fields
@@ -308,7 +302,7 @@ namespace NerdyDuck.Scheduler
 		/// </summary>
 		/// <param name="disposing">A value indicating if the method was called by user code. If <see langword="false"/>, the method was called by the runtime in the finalizer.</param>
 		/// <remarks>If <paramref name="disposing"/> is <see langword="false"/>, no other objects should be referenced.</remarks>
-		protected virtual void Dispose(bool disposing)
+		private void Dispose(bool disposing)
 		{
 			if (IsDisposed)
 				return;
@@ -340,7 +334,7 @@ namespace NerdyDuck.Scheduler
 		/// Reserved method.
 		/// </summary>
 		/// <returns>Always returns <see langword="null"/>.</returns>
-		public XmlSchema GetSchema()
+		XmlSchema IXmlSerializable.GetSchema()
 		{
 			return null;
 		}
@@ -349,7 +343,7 @@ namespace NerdyDuck.Scheduler
 		/// Reads the <see cref="ScheduledTask{T}"/> configuration from the specified <paramref name="reader"/>.
 		/// </summary>
 		/// <param name="reader">A <see cref="XmlReader"/> containing a serialized instance of a <see cref="ScheduledTask{T}"/>.</param>
-		public void ReadXml(XmlReader reader)
+		void IXmlSerializable.ReadXml(XmlReader reader)
 		{
 			if (reader == null)
 			{
@@ -379,26 +373,26 @@ namespace NerdyDuck.Scheduler
 			do
 			{
 				reader.ReadStartElement();
-				if (reader.Name == ScheduleName)
+				if (reader.Name == Schedule.RootName)
 				{
 					mSchedule = new Schedule();
-					mSchedule.ReadXml(reader);
+					((IXmlSerializable)mSchedule).ReadXml(reader);
 				}
-				else if (reader.Name == ActionName)
+				else if (reader.Name == ScheduledActionBase.RootName)
 				{
 					mAction = new T();
 					mAction.ReadXml(reader);
 				}
 			} while (!(reader.Name == root && reader.NodeType == XmlNodeType.EndElement));
 
-			if (mAction == null)
-			{
-				throw new CodedXmlException(Errors.CreateHResult(0x19), string.Format(Properties.Resources.ScheduledTask_ReadXml_MissingElement, ActionName));
-			}
-
 			if (mSchedule == null)
 			{
-				throw new CodedXmlException(Errors.CreateHResult(0x18), string.Format(Properties.Resources.ScheduledTask_ReadXml_MissingElement, ScheduleName));
+				throw new CodedXmlException(Errors.CreateHResult(0x18), string.Format(Properties.Resources.ScheduledTask_ReadXml_MissingElement, Schedule.RootName));
+			}
+
+			if (mAction == null)
+			{
+				throw new CodedXmlException(Errors.CreateHResult(0x19), string.Format(Properties.Resources.ScheduledTask_ReadXml_MissingElement, ScheduledActionBase.RootName));
 			}
 			mNextDueDate = mSchedule.GetNextDueDate(DateTimeOffset.Now, mLastStartTime);
 			IsInitialized = true;
@@ -408,7 +402,7 @@ namespace NerdyDuck.Scheduler
 		/// Writes the configuration of the <see cref="ScheduledTask{T}"/> to the specified <paramref name="writer"/>.
 		/// </summary>
 		/// <param name="writer">A <see cref="XmlWriter"/> that receives the configuration data.</param>
-		public void WriteXml(XmlWriter writer)
+		void IXmlSerializable.WriteXml(XmlWriter writer)
 		{
 			if (writer == null)
 			{
@@ -420,10 +414,10 @@ namespace NerdyDuck.Scheduler
 				writer.WriteAttributeString(LastStartTimeName, XmlConvert.ToString(mLastStartTime.Value));
 			if (mLastEndTime.HasValue)
 				writer.WriteAttributeString(LastEndTimeName, XmlConvert.ToString(mLastEndTime.Value));
-			writer.WriteStartElement(ScheduleName);
-			mSchedule.WriteXml(writer);
+			writer.WriteStartElement(Schedule.RootName);
+			((IXmlSerializable)mSchedule).WriteXml(writer);
 			writer.WriteEndElement();
-			writer.WriteStartElement(ActionName);
+			writer.WriteStartElement(ScheduledActionBase.RootName);
 			mAction.WriteXml(writer);
 			writer.WriteEndElement();
 		}

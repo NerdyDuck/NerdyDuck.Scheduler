@@ -167,7 +167,7 @@ namespace NerdyDuck.Tests.Scheduler
 			DateTimeOffset now2 = new DateTimeOffset(2013, 6, 1, 12, 0, 1, 0, TimeSpan.Zero);
 			ScheduledTask<FailableScheduledAction> task = new ScheduledTask<FailableScheduledAction>(Schedule.CreateOneTime(now), new FailableScheduledAction(FailableScheduledAction.DummyAction.Run), true, now, now2);
 
-			Assert.IsNull(task.GetSchema());
+			Assert.IsNull(((IXmlSerializable)task).GetSchema());
 		}
 
 		[TestMethod]
@@ -248,7 +248,7 @@ namespace NerdyDuck.Tests.Scheduler
 			string output = wr.ToString();
 			StringAssert.Contains(output, "<scheduledTask");
 			StringAssert.Contains(output, "<schedule ");
-			StringAssert.Contains(output, "<action ");
+			StringAssert.Contains(output, "<scheduledAction ");
 		}
 
 		[TestMethod]
@@ -261,7 +261,7 @@ namespace NerdyDuck.Tests.Scheduler
 			XmlWriter w = null;
 			CustomAssert.ThrowsException<CodedArgumentNullException>(() =>
 			{
-				task.WriteXml(w);
+				((IXmlSerializable)task).WriteXml(w);
 			});
 		}
 
@@ -288,7 +288,7 @@ namespace NerdyDuck.Tests.Scheduler
 		[TestMethod]
 		public void ReadXml_Success()
 		{
-			string input = "<?xml version=\"1.0\" encoding=\"utf-16\"?><scheduledTask isEnabled=\"true\" lastStartTime=\"2013-06-01T12:00:00Z\" lastEndTime=\"2013-06-01T12:00:01Z\" xmlns=\"http://www.nerdyduck.de/Scheduler\"><schedule type=\"OneTime\" scheduledDateTime=\"2013-06-01T12:00:00Z\" /><action behavior=\"ThrowException\" /></scheduledTask>";
+			string input = "<?xml version=\"1.0\" encoding=\"utf-16\"?><scheduledTask isEnabled=\"true\" lastStartTime=\"2013-06-01T12:00:00Z\" lastEndTime=\"2013-06-01T12:00:01Z\" xmlns=\"http://www.nerdyduck.de/Scheduler\"><schedule type=\"OneTime\" scheduledDateTime=\"2013-06-01T12:00:00Z\" /><scheduledAction behavior=\"ThrowException\" /></scheduledTask>";
 			StringReader r = new StringReader(input);
 
 			XmlSerializer serializer = new XmlSerializer(typeof(ScheduledTask<FailableScheduledAction>));
@@ -303,7 +303,7 @@ namespace NerdyDuck.Tests.Scheduler
 		[TestMethod]
 		public void ReadXml_NoSchedule_Error()
 		{
-			string input = "<?xml version=\"1.0\" encoding=\"utf-16\"?><scheduledTask isEnabled=\"true\" lastStartTime=\"2013-06-01T12:00:00Z\" lastEndTime=\"2013-06-01T12:00:01Z\" xmlns=\"http://www.nerdyduck.de/Scheduler\"><action behavior=\"ThrowException\" /></scheduledTask>";
+			string input = "<?xml version=\"1.0\" encoding=\"utf-16\"?><scheduledTask isEnabled=\"true\" lastStartTime=\"2013-06-01T12:00:00Z\" lastEndTime=\"2013-06-01T12:00:01Z\" xmlns=\"http://www.nerdyduck.de/Scheduler\"><scheduledAction behavior=\"ThrowException\" /></scheduledTask>";
 			StringReader r = new StringReader(input);
 
 			XmlSerializer serializer = new XmlSerializer(typeof(ScheduledTask<FailableScheduledAction>));
@@ -337,7 +337,7 @@ namespace NerdyDuck.Tests.Scheduler
 			XmlReader w = null;
 			CustomAssert.ThrowsException<CodedArgumentNullException>(() =>
 			{
-				task.ReadXml(w);
+				((IXmlSerializable)task).ReadXml(w);
 			});
 		}
 

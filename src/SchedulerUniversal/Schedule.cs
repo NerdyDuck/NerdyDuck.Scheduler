@@ -20,7 +20,7 @@
  * Task scheduler for .NET with variable schedules.
  * </assembly>
  * <file name="ScheduleType.cs" date="2016-02-02">
- * The schedule that triggers a ScheduledTask&lt;T&gt.
+ * The schedule that triggers a ScheduledTask&lt;T&gt;.
  * </file>
  ******************************************************************************/
 #endregion
@@ -48,7 +48,7 @@ namespace NerdyDuck.Scheduler
 	{
 		#region Constants
 		internal const string Namespace = "http://www.nerdyduck.de/Scheduler";
-		private const string RootName = "schedule";
+		internal const string RootName = "schedule";
 		private const string TypeName = "type";
 		private const string ScheduledDateTimeName = "scheduledDateTime";
 		private const string IntervalName = "interval";
@@ -360,7 +360,7 @@ namespace NerdyDuck.Scheduler
 		/// Reserved method.
 		/// </summary>
 		/// <returns>Always returns <see langword="null"/>.</returns>
-		public XmlSchema GetSchema()
+		XmlSchema IXmlSerializable.GetSchema()
 		{
 			return null;
 		}
@@ -369,7 +369,7 @@ namespace NerdyDuck.Scheduler
 		/// Reads the <see cref="Schedule"/> configuration from the specified <paramref name="reader"/>.
 		/// </summary>
 		/// <param name="reader">A <see cref="XmlReader"/> containing a serialized instance of a <see cref="Schedule"/>.</param>
-		public void ReadXml(XmlReader reader)
+		void IXmlSerializable.ReadXml(XmlReader reader)
 		{
 			if (reader == null)
 			{
@@ -402,7 +402,7 @@ namespace NerdyDuck.Scheduler
 		/// Writes the configuration of the <see cref="Schedule"/> to the specified <paramref name="writer"/>.
 		/// </summary>
 		/// <param name="writer">A <see cref="XmlWriter"/> that receives the configuration data.</param>
-		public void WriteXml(XmlWriter writer)
+		void IXmlSerializable.WriteXml(XmlWriter writer)
 		{
 			if (writer == null)
 			{

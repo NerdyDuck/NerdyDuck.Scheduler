@@ -491,7 +491,7 @@ namespace NerdyDuck.Tests.Scheduler
 		public void GetSchema_Success()
 		{
 			Schedule s1 = Schedule.CreateMonthlyWeekday(new TimeSpan(17, 20, 0), Weekdays.Sunday, Months.All, WeekInMonth.First);
-			Assert.IsNull(s1.GetSchema());
+			Assert.IsNull(((IXmlSerializable)s1).GetSchema());
 		}
 
 		[TestMethod]
@@ -501,7 +501,7 @@ namespace NerdyDuck.Tests.Scheduler
 
 			CustomAssert.ThrowsException<CodedArgumentNullException>(() =>
 			{
-				schedule.ReadXml(null);
+				((IXmlSerializable)schedule).ReadXml(null);
 			});
 		}
 
@@ -515,7 +515,7 @@ namespace NerdyDuck.Tests.Scheduler
 				reader.ReadToFollowing("schedule");
 				CustomAssert.ThrowsException<CodedXmlException>(() =>
 				{
-					schedule.ReadXml(reader);
+					((IXmlSerializable)schedule).ReadXml(reader);
 				});
 			}
 		}
@@ -530,11 +530,10 @@ namespace NerdyDuck.Tests.Scheduler
 				reader.ReadToFollowing("schedule");
 				CustomAssert.ThrowsException<CodedXmlException>(() =>
 				{
-					schedule.ReadXml(reader);
+					((IXmlSerializable)schedule).ReadXml(reader);
 				});
 			}
 		}
-
 		[TestMethod]
 		public void ReadXml_InvType_Error()
 		{
@@ -545,7 +544,7 @@ namespace NerdyDuck.Tests.Scheduler
 				reader.ReadToFollowing("schedule");
 				CustomAssert.ThrowsException<CodedXmlException>(() =>
 				{
-					schedule.ReadXml(reader);
+					((IXmlSerializable)schedule).ReadXml(reader);
 				});
 			}
 		}
@@ -557,9 +556,10 @@ namespace NerdyDuck.Tests.Scheduler
 
 			CustomAssert.ThrowsException<CodedArgumentNullException>(() =>
 			{
-				schedule.WriteXml(null);
+				((IXmlSerializable)schedule).WriteXml(null);
 			});
 		}
+
 		#endregion
 
 		#region Create

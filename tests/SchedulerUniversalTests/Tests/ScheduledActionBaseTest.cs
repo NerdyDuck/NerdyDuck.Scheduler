@@ -39,6 +39,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace NerdyDuck.Tests.Scheduler
 {
@@ -71,7 +72,7 @@ namespace NerdyDuck.Tests.Scheduler
 		public void XmlSerializable_Success()
 		{
 			FailableScheduledAction action = new FailableScheduledAction(FailableScheduledAction.DummyAction.ThrowException);
-			Assert.IsNull(action.GetSchema());
+			Assert.IsNull(((IXmlSerializable)action).GetSchema());
 			using (XmlWriter writer = XmlWriter.Create(new MemoryStream()))
 			{
 				writer.WriteStartElement("action");

@@ -19,7 +19,7 @@
  * <assembly name="NerdyDuck.Scheduler">
  * Task scheduler for .NET with variable schedules.
  * </assembly>
- * <file name="Resources.cs" date="2016-02-26">
+ * <file name="Resources.cs" date="2016-03-07">
  * Helper class to access localized string resources.
  * </file>
  ******************************************************************************/

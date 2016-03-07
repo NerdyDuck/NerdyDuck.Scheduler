@@ -2,12 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata minClientVersion="3.2">
 		<id>NerdyDuck.Scheduler</id>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 		<title>NerdyDuck Scheduler</title>
 		<authors>Daniel Kopp</authors>
 		<description>This library provides a set of base classes to create a scheduler hosted within an application. The actions executed by a scheduled task are tailored to the specific application. The scheduler offers different task schedules, like regular intervals, daily, weekly, monthly or one-time occurrences. The tasks are executed on the default thread pool.</description>
 		<releaseNotes>
-			v1.0.0: First release
+			v1.0.1: Switched IXmlSerializable interfaces in Schedule, ScheduledTask&lt;T&gt;` and ScheduledActionBase from public access to explicit interface implementation, where appropriate.
 		</releaseNotes>
 		<summary>Task scheduler with variable schedules for .NET 4.6+ and UWP.</summary>
 		<language>en-US</language>

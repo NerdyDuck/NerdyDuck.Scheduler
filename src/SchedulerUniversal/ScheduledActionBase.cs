@@ -39,7 +39,7 @@ namespace NerdyDuck.Scheduler
 	public abstract class ScheduledActionBase : IDisposable, IXmlSerializable
 	{
 		#region Constants
-		private const string RootName = "scheduledAction";
+		internal const string RootName = "scheduledAction";
 		#endregion
 
 		#region Private fields
@@ -119,7 +119,7 @@ namespace NerdyDuck.Scheduler
 		/// Reserved method.
 		/// </summary>
 		/// <returns>Always returns <see langword="null"/>.</returns>
-		public XmlSchema GetSchema()
+		XmlSchema IXmlSerializable.GetSchema()
 		{
 			return null;
 		}
