@@ -34,19 +34,39 @@
     <CodeAnalysisRuleSet>ExtendedDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\NerdyDuck.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
     <IncludeFrameworkReferencesFromNuGet>false</IncludeFrameworkReferencesFromNuGet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\NerdyDuck.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResWFiles Include="..\SchedulerUniversal\Strings\en-US\Resources.resw">
+      <Link>Properties\en-US\Resources.resw</Link>
+      <ResourceName>NerdyDuck.Scheduler.Properties.Resources</ResourceName>
+    </ResWFiles>
+    <ResWFiles Include="..\SchedulerUniversal\Strings\de-DE\Resources.resw">
+      <Link>Properties\de-DE\Resources.resw</Link>
+      <ResourceName>NerdyDuck.Scheduler.Properties.Resources.de-DE</ResourceName>
+    </ResWFiles>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\NerdyDuck.snk">
+      <Link>NerdyDuck.snk</Link>
+    </None>
+    <None Include="..\SchedulerUniversal\ErrorCodes.csv">
+      <Link>ErrorCodes.csv</Link>
+    </None>
+    <None Include="project.json" />
+    <CodeAnalysisDictionary Include="..\SchedulerUniversal\CustomDictionary.xml">
+      <Link>CustomDictionary.xml</Link>
+    </CodeAnalysisDictionary>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SchedulerUniversal\Errors.cs">
@@ -93,63 +113,14 @@
     </Compile>
     <Compile Include="Scheduler.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\NerdyDuck.snk">
-      <Link>NerdyDuck.snk</Link>
-    </None>
-    <None Include="..\SchedulerUniversal\ErrorCodes.csv">
-      <Link>ErrorCodes.csv</Link>
-    </None>
-    <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResWFiles Include="..\SchedulerUniversal\Strings\en-US\Resources.resw">
-      <Link>Properties\en-US\Resources.resw</Link>
-      <ResourceName>NerdyDuck.Scheduler.Properties.Resources</ResourceName>
-    </ResWFiles>
-    <ResWFiles Include="..\SchedulerUniversal\Strings\de-DE\Resources.resw">
-      <Link>Properties\de-DE\Resources.resw</Link>
-      <ResourceName>NerdyDuck.Scheduler.Properties.Resources.de-DE</ResourceName>
-    </ResWFiles>
-  </ItemGroup>
-  <ItemGroup>
-    <CodeAnalysisDictionary Include="..\SchedulerUniversal\CustomDictionary.xml">
-      <Link>CustomDictionary.xml</Link>
-    </CodeAnalysisDictionary>
-  </ItemGroup>
+  <PropertyGroup>
+    <TransformT4OnBuild>true</TransformT4OnBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <SignAssemblies>true</SignAssemblies>
+  </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="BeforeBuild">
-    <!-- Need to copy/rename the *.resw files to *.resx, because GenerateResource does not recognize the .resw file extension. Copied files are renamed to the full name of the resource. -->
-    <Copy SourceFiles="@(ResWFiles)" DestinationFiles="@(ResWFiles->'obj\$(ConfigurationName)\%(ResourceName).resx')" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true">
-      <Output TaskParameter="CopiedFiles" ItemName="ResXFiles" />
-    </Copy>
-    <!-- Generate resource files -->
-    <GenerateResource Sources="@(ResXFiles)" OutputResources="@(ResXFiles->'obj\$(ConfigurationName)\%(Filename).resources')">
-      <Output TaskParameter="OutputResources" ItemName="GeneratedResources" />
-    </GenerateResource>
-    <!-- Adding generated resource files to project as embedded resource.
-    Because the file names include the culture (e.g. NerdyDuck.ParameterValidation.Properties.Resources.de-DE.resources),
-    the appropriate satellite assemblies are generated automatically. The resource file without a culture (that is en-US)
-    is embedded into the main assembly. -->
-    <ItemGroup>
-      <EmbeddedResource Include="obj\$(ConfigurationName)\%(ResWFiles.ResourceName).resources">
-        <LogicalName>%(ResWFiles.ResourceName).resources</LogicalName>
-      </EmbeddedResource>
-    </ItemGroup>
-  </Target>
-  <Target Name="AfterBuild">
-    <ItemGroup>
-      <!-- Getting output assemblies and generated satellite assemblies -->
-      <FilesToSign Include="$(TargetDir)**\$(TargetName)*$(TargetExt)" />
-      <FilesToSign Condition="'$(TargetExt)' != '.dll'" Include="$(TargetDir)**\$(TargetName)**.dll" />
-    </ItemGroup>
-    <PropertyGroup>
-      <!-- Get installation path of Windows SDK 7.1A, because it contains signtool.exe -->
-      <WinSDK71Path>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.1A@InstallationFolder)</WinSDK71Path>
-      <SignHashAlg>sha256</SignHashAlg>
-      <TimestampServer>http://tsa.startssl.com/rfc3161</TimestampServer>
-    </PropertyGroup>
-    <!-- Sign all assemblies, using the default SPC from the user store -->
-    <Exec Condition=" '$(Configuration)' == 'Release' " Command="&quot;$(WinSDK71Path)bin\signtool.exe&quot; sign /a /q /fd $(SignHashAlg) /tr $(TimestampServer) &quot;%(FilesToSign.Identity)&quot;" />
-  </Target>
+  <Import Project="..\..\tools\TransformT4OnBuild.targets"/>
+  <Import Project="..\..\tools\TransformResW2X.targets"/>
+  <Import Project="..\..\tools\SignAssembly.targets"/>
 </Project>

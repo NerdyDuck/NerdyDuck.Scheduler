@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+*******************************************************************************
+  <copyright file="T4TransformOnBuild.targets" owner="Daniel Kopp">
+  Copyright 2015-2016 Daniel Kopp
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  </copyright>
+  <author name="Daniel Kopp" email="dak@nerdyduck.de" />
+  <file name="T4TransformOnBuild.targets" date="2016-03-09">
+  MSBuild target file to transform all T4 template files (*.tt) in a project
+  during build.
+  </file>
+  <acknowledgement>
+  Inspired by Daniel Cazzulino's blog entry:
+  http://blogs.clariusconsulting.net/kzu/how-to-transform-t4-templates-on-build-without-installing-a-visual-studio-sdk/
+  </acknowledgement>
+******************************************************************************
+-->
+
+<!--
+*******************************************************************************
+  Usage:
+  - Put an Import statement into your project file (towards the end of the file).
+  - Add the TransformT4OnBuild property in a PropertyGroup and set it to true.
+  - If you want to use a different TextTransform.exe (or a similar tool) than
+    the one used by your Visual Studio installation, set the property
+    TextTransformExePath to the path of the executable.
+
+  Example:
+
+  <PropertyGroup>
+    <TransformT4OnBuild>true</TransformT4OnBuild>
+  </PropertyGroup>
+  <Import Project="TransformT4OnBuild.targets"/>
+
+******************************************************************************/
+-->
+
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TransformT4OnBuild Condition=" '$(TransformT4OnBuild)'=='' ">false</TransformT4OnBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TransformT4OnBuild)'=='true' ">
+    <TextTransformExePath Condition=" '$(TextTransformExePath)'=='' ">$(CommonProgramFiles)\Microsoft Shared\TextTemplating\$(MSBuildToolsVersion)\TextTransform.exe</TextTransformExePath>
+  </PropertyGroup>
+
+  <Target Name="TransformT4OnBuild" Condition=" '$(TransformT4OnBuild)'=='true' " AfterTargets="BeforeBuild">
+    <Error Text="Failed to find TextTransform.exe tool at $(TextTransformExePath)." Condition="!Exists('$(TextTransformExePath)')"/>
+    <Message Text="Transforming text templates..." Importance="high" />
+    <ItemGroup>
+      <FilesToTransform Include="@(None)" Condition="'%(None.Generator)' == 'TextTemplatingFileGenerator'" />
+    </ItemGroup>
+    <Message Text="Files transformed: @(FilesToTransform)" />
+    <Exec Command="&quot;$(TextTransformExePath)&quot; &quot;@(FilesToTransform->'%(FullPath)')&quot;" WorkingDirectory="@(FilesToTransform->'%(RelativeDir)')" Condition="'%(Identity)' != ''"/>
+  </Target>
+</Project>

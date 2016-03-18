@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+*******************************************************************************
+  <copyright file="TransformResW2X.targets" owner="Daniel Kopp">
+  Copyright 2015-2016 Daniel Kopp
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  </copyright>
+  <author name="Daniel Kopp" email="dak@nerdyduck.de" />
+  <file name="TransformResW2X.targets" date="2016-03-09">
+  MSBuild target file to rename *.resw files to *.resx and compile them into
+  resources that are embedded into an assembly and corresponding satellite
+  assemblies.
+  </file>
+******************************************************************************
+-->
+
+<!--
+*******************************************************************************
+  Prerequisites:
+  - All RESW files to convert must be listed in an ItemGroup with the element
+    name ResWFiles.
+  - Each ResWFiles element requires a Link child element so it is properly
+    displayed in Visual Studio, and a ResourceName element, that contains
+    the name of the output resource file. The name requires the name of the
+    resource's culture at the end, with the exception of the neutral resource
+    language. That way the neutral language is embedded into the main assembly,
+    while other languages get their own satellite assembly.
+
+  Usage:
+  - Put an Import statement into your project file (towards the end of the file).
+  - Add one ResWFiles for every language into an ItemGroup.
+
+  Example (assuming your theoretical RESX files would be stored in the
+    Properties folder):
+
+  <ItemGroup>
+    <ResWFiles Include="..\MyUniversalProject\Strings\en-US\Resources.resw">
+      <Link>Properties\en-US\Resources.resw</Link>
+      <ResourceName>MyAssemblyName.Properties.Resources</ResourceName>
+    </ResWFiles>
+    <ResWFiles Include="..\MyUniversalProject\Strings\de-DE\Resources.resw">
+      <Link>Properties\de-DE\Resources.resw</Link>
+      <ResourceName>MyAssemblyName.Properties.Resources.de-DE</ResourceName>
+    </ResWFiles>
+  </ItemGroup>
+
+  <Import Project="TransformResW2X.targets"/>
+
+******************************************************************************/
+-->
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="TransformResW2X" AfterTargets="BeforeBuild">
+    <Message Text="Generating resources..." Importance="high" />
+    <!-- Need to copy/rename the *.resw files to *.resx, because GenerateResource does not recognize the .resw file extension. Copied files are renamed to the full name of the resource. -->
+    <Copy SourceFiles="@(ResWFiles)" DestinationFiles="@(ResWFiles->'obj\$(ConfigurationName)\%(ResourceName).resx')" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true">
+      <Output TaskParameter="CopiedFiles" ItemName="ResXFiles" />
+    </Copy>
+    <!-- Generate resource files -->
+    <GenerateResource Sources="@(ResXFiles)" OutputResources="@(ResXFiles->'obj\$(ConfigurationName)\%(Filename).resources')">
+      <Output TaskParameter="OutputResources" ItemName="GeneratedResources" />
+    </GenerateResource>
+    <Message Text="Resources generated: @(GeneratedResources)" />
+    <!-- Adding generated resource files to project as embedded resource.
+         Because the file names include the culture (e.g. NerdyDuck.CodedExceptions.Properties.Resources.de-DE.resources),
+         the appropriate satellite assemblies are generated automatically. The resource file without a culture (that is en-US)
+         is embedded into the main assembly. -->
+    <ItemGroup>
+      <EmbeddedResource Include="obj\$(ConfigurationName)\%(ResWFiles.ResourceName).resources">
+        <LogicalName>%(ResWFiles.ResourceName).resources</LogicalName>
+      </EmbeddedResource>
+    </ItemGroup>
+  </Target>
+</Project>

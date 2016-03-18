@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{444DED7B-F497-44FB-8010-744D4659E5E9}</ProjectGuid>
+    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">obj\</BaseIntermediateOutputPath>
+    <NuGetExeDownloadUrl Condition=" '$(NuGetExeDownloadUrl)'=='' ">https://dist.nuget.org/win-x86-commandline/latest/nuget.exe</NuGetExeDownloadUrl>
+    <CreateSymbolPackage Condition=" '$(CreateSymbolPackage)'=='' ">true</CreateSymbolPackage>
+    <NuSpecFileBase Condition=" '$(NuSpecFileBase)'=='' ">Package</NuSpecFileBase>
+    <NuSpecMetaFile Condition=" '$(NuSpecMetaFile)'=='' ">PackageMeta.xml</NuSpecMetaFile>
+    <TextTransformExePath Condition=" '$(TextTransformExePath)'=='' ">$(CommonProgramFiles)\Microsoft Shared\TextTemplating\$(MSBuildToolsVersion)\TextTransform.exe</TextTransformExePath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug</OutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)Debug</IntermediateOutputPath>
+    <PushNuGetPackage>false</PushNuGetPackage>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release</OutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)Release</IntermediateOutputPath>
+    <PushNuGetPackage>true</PushNuGetPackage>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="DeploySettings.props" />
+    <None Include="PackageMeta.xml" />
+    <None Include="Package.tt">
+      <LastGenOutput>Package.nuspec</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="DeploySettings.props" />
+  <ItemGroup>
+    <!-- All projects and platforms to build. Send into obj folder -->
+    <ProjectsToBuild Include="$(DesktopProject)">
+      <Properties>Configuration=$(Configuration);Platform=AnyCPU;OutputPath=$(MSBuildProjectDirectory)\$(IntermediateOutputPath)\net46</Properties>
+    </ProjectsToBuild>
+    <ProjectsToBuild Include="$(UniversalProject)">
+      <Properties>Configuration=$(Configuration);Platform=AnyCPU;OutputPath=$(MSBuildProjectDirectory)\$(IntermediateOutputPath)\uap10.0\anyCPU</Properties>
+    </ProjectsToBuild>
+    <ProjectsToBuild Include="$(UniversalProject)">
+      <Properties>Configuration=$(Configuration);Platform=ARM;OutputPath=$(MSBuildProjectDirectory)\$(IntermediateOutputPath)\uap10.0\arm</Properties>
+    </ProjectsToBuild>
+    <ProjectsToBuild Include="$(UniversalProject)">
+      <Properties>Configuration=$(Configuration);Platform=x64;OutputPath=$(MSBuildProjectDirectory)\$(IntermediateOutputPath)\uap10.0\x64</Properties>
+    </ProjectsToBuild>
+    <ProjectsToBuild Include="$(UniversalProject)">
+      <Properties>Configuration=$(Configuration);Platform=x86;OutputPath=$(MSBuildProjectDirectory)\$(IntermediateOutputPath)\uap10.0\x86</Properties>
+    </ProjectsToBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="contentFiles\" />
+  </ItemGroup>
+  <Target Name="Build">
+    <Error Condition="!Exists('$(NuSpecFileBase).tt')" Text="NuSpec file not found ($(NuSpecFileBase).tt)" />
+    <Error Text="Failed to find TextTransform.exe tool at $(TextTransformExePath)." Condition="!Exists('$(TextTransformExePath)')" />
+    <!-- Cleanup before build -->
+    <ItemGroup>
+      <FilesToDelete Include="$(IntermediateOutputPath)\**\*" />
+      <FilesToDelete Include="$(OutputPath)\**\*.nupkg" />
+      <FilesToDelete Include="$(OutputPath)\**\*.zip" />
+      <FilesToDelete Include=".\NuGet.log" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+    <RemoveDir Directories="$(IntermediateOutputPath)\" />
+    <!-- Build the projects -->
+    <MSBuild Projects="@(ProjectsToBuild)" Targets="Build" />
+    <!-- Get version number for .zip and .nupkg from AssemblyInfo.cs, then create zip files from contents of obj directory structure -->
+    <GetAssemblyVersion FilePath="$(AssemblyInfoFile)">
+      <Output TaskParameter="VersionString" PropertyName="PackageVersionString" />
+    </GetAssemblyVersion>
+    <CreateZipFromDirectory DirectoryName="$(IntermediateOutputPath)\" ArchiveFileName="$(OutputPath)\$(PackageName)-$(PackageVersionString)-binaries.zip" />
+    <!-- Transform Package.tt and PackageMeta.xml into Package.nuspec, pack and push NuGet -->
+    <Exec Command="&quot;$(TextTransformExePath)&quot; &quot;$(NuSpecFileBase).tt&quot; -a &quot;!!SolutionFolder!$(SolutionDir) &quot; -a &quot;!!DeployProjectFolder!$(MSBuildProjectDirectory) &quot; -a &quot;!!DesktopProject!$(DesktopProject)&quot; -a &quot;!!UniversalProject!$(UniversalProject)&quot; -a &quot;!!FileSourceFolder!$(IntermediateOutputPath) &quot; -a &quot;!!ContentFilesSourceFolder!$(ContentFilesPath) &quot; -a &quot;!!MetaFileName!$(NuSpecMetaFile)&quot; -a !!PackageName!$(PackageName) -a !!PackageVersion!$(PackageVersionString)" />
+    <DownloadFile Condition="!Exists('nuget.exe')" Address="$(NuGetExeDownloadUrl)" FileName="nuget.exe" />
+    <Exec Command="nuget.exe update -self" />
+    <Exec Condition=" '$(CreateSymbolPackage)'=='true' " Command="nuget.exe pack &quot;$(NuSpecFileBase).nuspec&quot; -NonInteractive -Symbols -OutputDirectory &quot;$(OutputPath)&quot;" />
+    <Exec Condition=" '$(CreateSymbolPackage)'=='false' " Command="nuget.exe pack &quot;$(NuSpecFileBase).nuspec&quot; -NonInteractive -OutputDirectory &quot;$(OutputPath)&quot;" />
+    <ItemGroup>
+      <NuPackage Include="$(OutputPath)\*.nupkg" Exclude="**\*.symbols.nupkg" />
+      <SymbolPackage Condition=" '$(CreateSymbolPackage)'=='true' " Include="$(OutputPath)\*.symbols.nupkg" />
+    </ItemGroup>
+    <Message Condition=" '$(PushNuGetPackage)'=='true' " Text="Pushing package to $(NuGetPackageSource)" Importance="high" />
+    <Exec Condition=" '$(PushNuGetPackage)'=='true' And '$(NuGetPackageSourceApiKey)'=='' " Command="nuget.exe push &quot;@(NuPackage)&quot; -Source $(NuGetPackageSource)" />
+    <Exec Condition=" '$(PushNuGetPackage)'=='true' And '$(NuGetPackageSourceApiKey)'!='' " Command="nuget.exe push &quot;@(NuPackage)&quot; $(NuGetPackageSourceApiKey) -Source $(NuGetPackageSource)" />
+    <Message Condition=" '$(PushNuGetPackage)'=='true' " Text="Done." Importance="high" />
+    <Message Condition=" '$(PushNuGetPackage)'=='true' And '$(CreateSymbolPackage)'=='true' " Text="Pushing symbol package to $(NuGetSymbolSource)" Importance="high" />
+    <Exec Condition=" '$(PushNuGetPackage)'=='true' And '$(CreateSymbolPackage)'=='true' And '$(NuGetSymbolSourceApiKey)'=='' " Command="nuget.exe push &quot;@(SymbolPackage)&quot; -Source $(NuGetSymbolSource)" />
+    <Exec Condition=" '$(PushNuGetPackage)'=='true' And '$(CreateSymbolPackage)'=='true' And '$(NuGetSymbolSourceApiKey)'!='' " Command="nuget.exe push &quot;@(SymbolPackage)&quot; $(NuGetSymbolSourceApiKey) -Source $(NuGetSymbolSource)" />
+    <Message Condition=" '$(PushNuGetPackage)'=='true' And '$(CreateSymbolPackage)'=='true' " Text="Done." Importance="high" />
+  </Target>
+  <Target Name="Clean">
+    <MSBuild Projects="@(ProjectsToBuild)" Targets="Clean" />
+    <ItemGroup>
+      <FilesToDelete Include="$(TempPath)\**\*" />
+      <FilesToDelete Include="$(OutputPath)\**\*.nupkg" />
+      <FilesToDelete Include="$(OutputPath)\**\*.zip" />
+      <FilesToDelete Include=".\NuGet.log" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+  </Target>
+  <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
+  <!-- Download a file via HTTP -->
+  <UsingTask TaskName="DownloadFile" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
+    <ParameterGroup>
+      <Address ParameterType="System.String" Required="true" />
+      <FileName ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+					Log.LogMessage(MessageImportance.High, "Downloading nuget.exe ...");
+					new System.Net.WebClient().DownloadFile(Address, FileName);
+					Log.LogMessage(MessageImportance.High, "Done.");
+				]]></Code>
+    </Task>
+  </UsingTask>
+  <!-- Get the first 3 parts of an AssemblyVersionAttribute from an AssemblyInfo file -->
+  <UsingTask TaskName="GetAssemblyVersion" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
+    <ParameterGroup>
+      <FilePath ParameterType="System.String" Required="true" />
+      <VersionString ParameterType="System.String" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System" />
+      <Reference Include="System.IO" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+
+					VersionString = "0.0.0";
+
+					string[] Content = File.ReadAllLines(FilePath, System.Text.Encoding.UTF8);
+					foreach (string line in Content)
+					{
+						if (line.Contains("AssemblyVersion"))
+						{
+							int StartPos = line.IndexOf('"') + 1;
+							int Length = line.IndexOf('"', StartPos + 1) - StartPos;
+							Version AssemblyVersion = new Version(line.Substring(StartPos, Length));
+							VersionString = AssemblyVersion.ToString(3);
+							break;
+						}
+					}
+					Log.LogMessage(MessageImportance.High, "Package version number: " + VersionString);
+				]]></Code>
+    </Task>
+  </UsingTask>
+  <!-- Create a zip from a directory structure, using relative paths in the container -->
+  <UsingTask TaskName="CreateZipFromDirectory" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
+    <ParameterGroup>
+      <DirectoryName ParameterType="System.String" Required="true" />
+      <ArchiveFileName ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System" />
+      <Reference Include="System.IO" />
+      <Reference Include="System.IO.Compression.FileSystem" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+					System.IO.Compression.ZipFile.CreateFromDirectory(DirectoryName, ArchiveFileName, System.IO.Compression.CompressionLevel.Optimal, false);
+				]]></Code>
+    </Task>
+  </UsingTask>
+</Project>

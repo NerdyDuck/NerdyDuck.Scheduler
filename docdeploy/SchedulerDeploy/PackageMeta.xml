@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!--
+*******************************************************************************
+  <copyright file="PackageMeta.xml" owner="Daniel Kopp">
+  Copyright 2015-2016 Daniel Kopp
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  </copyright>
+  <author name="Daniel Kopp" email="dak@nerdyduck.de" />
+  <file name="PackageMeta.xml" date="2016-03-09">
+  The metadata element of a .nuspec file to combine with a T4 template.
+  The id and version elements are filled automatically.
+  </file>
+******************************************************************************
+-->
+
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata minClientVersion="3.3.0">
+		<id>$id$</id>
+		<version>$version$</version>
+		<title>NerdyDuck Scheduler</title>
+		<authors>Daniel Kopp</authors>
+		<description>This library provides a set of base classes to create a scheduler hosted within an application. The actions executed by a scheduled task are tailored to the specific application. The scheduler offers different task schedules, like regular intervals, daily, weekly, monthly or one-time occurrences. The tasks are executed on the default thread pool.</description>
+		<releaseNotes>
+			v1.0.1: Switched IXmlSerializable interfaces in Schedule, ScheduledTask&lt;T&gt;` and ScheduledActionBase from public access to explicit interface implementation, where appropriate.
+		</releaseNotes>
+		<summary>Task scheduler with variable schedules for .NET 4.6+ and UWP.</summary>
+		<language>en-US</language>
+		<projectUrl>https://github.com/NerdyDuck/NerdyDuck.Scheduler</projectUrl>
+		<iconUrl>http://static.nerdyduck.de/NuGet/NerdyDuck.Scheduler-50x50.png</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+		<copyright>Copyright Daniel Kopp 2015-2016</copyright>
+		<frameworkAssemblies>
+			<frameworkAssembly assemblyName="System.Runtime.Serialization" targetFramework="net46" />
+			<frameworkAssembly assemblyName="System.Xml" targetFramework="net46" />
+		</frameworkAssemblies>
+		<dependencies>
+			<dependency id="NerdyDuck.CodedExceptions" version="1.1.2"/>
+			<dependency id="NerdyDuck.Collections" version="1.0.1"/>
+		</dependencies>
+		<references></references>
+		<tags>schedule task interval daily weekly monthly uwp desktop</tags>
+	</metadata>
+</package>
