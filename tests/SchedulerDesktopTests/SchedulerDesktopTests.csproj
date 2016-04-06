@@ -75,9 +75,6 @@
     <Compile Include="..\SchedulerUniversalTests\SimpleSchedulerAction.cs">
       <Link>SimpleSchedulerAction.cs</Link>
     </Compile>
-    <Compile Include="..\SchedulerUniversalTests\Tests\ErrorsTest.cs">
-      <Link>Tests\ErrorsTest.cs</Link>
-    </Compile>
     <Compile Include="..\SchedulerUniversalTests\Tests\ScheduledActionBaseTest.cs">
       <Link>Tests\ScheduledActionBaseTest.cs</Link>
     </Compile>

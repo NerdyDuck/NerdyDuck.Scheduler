@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0A5AB4B2-4E78-4E1E-9559-94CA26F9A3E9}"
 	ProjectSection(SolutionItems) = preProject
@@ -26,9 +26,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulerUniversal", "src\SchedulerUniversal\SchedulerUniversal.csproj", "{B4D3B305-FA8B-47F9-9BEB-099521250EDA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulerDesktop", "src\SchedulerDesktop\SchedulerDesktop.csproj", "{CF979BFE-8804-48D4-8A0E-58E875916D25}"
-	ProjectSection(ProjectDependencies) = postProject
-		{B4D3B305-FA8B-47F9-9BEB-099521250EDA} = {B4D3B305-FA8B-47F9-9BEB-099521250EDA}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulerUniversalTests", "tests\SchedulerUniversalTests\SchedulerUniversalTests.csproj", "{FF3B2717-7829-4A3D-8CAE-E6CC225748B5}"
 EndProject
@@ -83,6 +80,7 @@ Global
 		{CF979BFE-8804-48D4-8A0E-58E875916D25}.Release|x86.ActiveCfg = Release|Any CPU
 		{CF979BFE-8804-48D4-8A0E-58E875916D25}.Release|x86.Build.0 = Release|Any CPU
 		{FF3B2717-7829-4A3D-8CAE-E6CC225748B5}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{FF3B2717-7829-4A3D-8CAE-E6CC225748B5}.Debug|Any CPU.Build.0 = Debug|x86
 		{FF3B2717-7829-4A3D-8CAE-E6CC225748B5}.Debug|ARM.ActiveCfg = Debug|ARM
 		{FF3B2717-7829-4A3D-8CAE-E6CC225748B5}.Debug|ARM.Build.0 = Debug|ARM
 		{FF3B2717-7829-4A3D-8CAE-E6CC225748B5}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -111,7 +109,6 @@ Global
 		{125881FD-4CDB-4A85-BC65-AE238A773976}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{125881FD-4CDB-4A85-BC65-AE238A773976}.Debug|x86.Build.0 = Debug|Any CPU
 		{125881FD-4CDB-4A85-BC65-AE238A773976}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{125881FD-4CDB-4A85-BC65-AE238A773976}.Release|Any CPU.Build.0 = Release|Any CPU
 		{125881FD-4CDB-4A85-BC65-AE238A773976}.Release|ARM.ActiveCfg = Release|Any CPU
 		{125881FD-4CDB-4A85-BC65-AE238A773976}.Release|ARM.Build.0 = Release|Any CPU
 		{125881FD-4CDB-4A85-BC65-AE238A773976}.Release|x64.ActiveCfg = Release|Any CPU

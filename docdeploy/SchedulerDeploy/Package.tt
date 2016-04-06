@@ -18,7 +18,7 @@
  * <author name="Daniel Kopp" email="dak@nerdyduck.de" />
  * <file name="Package.tt" date="2016-03-10">
  * Creates a Package.nuspec file to create a NuGet package that contains
- * libraries for both full .NET Framework 4.6 and UWP..
+ * libraries for both full .NET Framework 4.6 and UWP.
  * </file>
  ******************************************************************************/
 #>
@@ -87,7 +87,7 @@ List<FileInfo> Universalx86Files = GetOutputFiles(Universalx86Folder);
 		WriteFileElement(XmlDocFile, @"lib\uap10.0\", DeployProjectFolder, UniversalAnyFolder);
 #>
 
-		<!-- Simple Txm for .Net 4.5 desktop version-->
+		<!-- Simple Txm for .Net 4.6 desktop version-->
 <#
 		foreach (FileInfo info in DesktopAnyFiles)
 		{

@@ -16,16 +16,14 @@
  * limitations under the License.
  * </copyright>
  * <author name="Daniel Kopp" email="dak@nerdyduck.de" />
- * <assembly name="NerdyDuck.Scheduler">
- * Task scheduler for .NET with variable schedules.
- * </assembly>
- * <file name="Resources.cs" date="2016-03-17">
+ * <file name="Resources.cs" date="2016-04-06">
  * Helper class to access localized string resources.
  * </file>
  ******************************************************************************/
 #endregion
 
 using System;
+using System.Globalization;
 
 namespace NerdyDuck.Scheduler.Properties
 {
@@ -230,6 +228,39 @@ namespace NerdyDuck.Scheduler.Properties
 
 			return resourceCandidate.ValueAsString;
 		}
+
+		/// <summary>
+		/// Retrieves a string resource for the specified culture using the resource map.
+		/// </summary>
+		/// <param name="name">The name of the string resource.</param>
+		/// <param name="culture">The culture to retrieve a matching string for. May be <see langword="null"/>.</param>
+		/// <returns>A localized string.</returns>
+		internal static string GetResource(string name, CultureInfo culture)
+		{
+			Windows.ApplicationModel.Resources.Core.ResourceContext context;
+			if (culture == null || culture.IsNeutralCulture)
+			{
+				context = Context;
+				if (context == null)
+				{
+					context = Windows.ApplicationModel.Resources.Core.ResourceContext.GetForViewIndependentUse();
+				}
+			}
+			else
+			{
+				context = new Windows.ApplicationModel.Resources.Core.ResourceContext();
+				context.Languages = new string[] { culture.TwoLetterISOLanguageName };
+			}
+
+			Windows.ApplicationModel.Resources.Core.ResourceCandidate resourceCandidate = ResourceMap.GetValue("NerdyDuck.Logging/Resources/" + name, context);
+
+			if (resourceCandidate == null)
+			{
+				throw new ArgumentOutOfRangeException(nameof(name));
+			}
+
+			return resourceCandidate.ValueAsString;
+		}
 		#endregion
 #endif
 
@@ -277,6 +308,17 @@ namespace NerdyDuck.Scheduler.Properties
 		internal static string GetResource(string name)
 		{
 			return ResourceManager.GetString(name, mResourceCulture);
+		}
+
+		/// <summary>
+		/// Retrieves a string resource for the specified culture using the resource manager.
+		/// </summary>
+		/// <param name="name">The name of the string resource.</param>
+		/// <param name="culture">The culture to retrieve a matching string for. May be <see langword="null"/>.</param>
+		/// <returns>A localized string.</returns>
+		internal static string GetResource(string name, CultureInfo culture)
+		{
+			return ResourceManager.GetString(name, culture);
 		}
 		#endregion
 #endif

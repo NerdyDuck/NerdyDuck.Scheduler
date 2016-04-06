@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="6eaeea31-dc40-4c95-9253-d2d3f86995fb" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>
+				Version 1.0.2 was released on 2016-04-06.
+			</para>
+		</introduction>
+
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>
+							Updated reference for NerdyDuck.CodedExceptions to v1.2.0. Updated reference for NerdyDuck.Collections to 1.0.2.
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							Added deployment project to compile all projects and create/push the NuGet package in one go. Removed separate NuGet project. Removes also dependency on NuGet Packager Template.
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							Extracted file signing into its own reusable MSBuild target file.
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							Extracted resource generation for desktop project into its own reusable MSBuild target file.
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							Created a MSBuild target for automatic T4 transformations on build. Removes dependency on Visual Studio Modeling SDK.
+						</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="23ac6050-6fc6-421c-9e6c-b5aa9df44e9f" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

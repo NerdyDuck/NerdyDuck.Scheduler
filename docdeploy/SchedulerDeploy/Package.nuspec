@@ -2,12 +2,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata minClientVersion="3.3.0" xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 		<id>NerdyDuck.Scheduler</id>
-		<version>1.0.1</version>
+		<version>1.0.2</version>
 		<title>NerdyDuck Scheduler</title>
 		<authors>Daniel Kopp</authors>
 		<description>This library provides a set of base classes to create a scheduler hosted within an application. The actions executed by a scheduled task are tailored to the specific application. The scheduler offers different task schedules, like regular intervals, daily, weekly, monthly or one-time occurrences. The tasks are executed on the default thread pool.</description>
 		<releaseNotes>
-			v1.0.1: Switched IXmlSerializable interfaces in Schedule, ScheduledTask&lt;T&gt;` and ScheduledActionBase from public access to explicit interface implementation, where appropriate.
+			v1.0.2: Updated library references.
+			v1.0.1: Switched IXmlSerializable interfaces in Schedule, ScheduledTask(T) and ScheduledActionBase from public access to explicit interface implementation, where appropriate.
 		</releaseNotes>
 		<summary>Task scheduler with variable schedules for .NET 4.6+ and UWP.</summary>
 		<language>en-US</language>
@@ -21,8 +22,8 @@
 			<frameworkAssembly assemblyName="System.Xml" targetFramework="net46" />
 		</frameworkAssemblies>
 		<dependencies>
-			<dependency id="NerdyDuck.CodedExceptions" version="1.1.2" />
-			<dependency id="NerdyDuck.Collections" version="1.0.1" />
+			<dependency id="NerdyDuck.CodedExceptions" version="1.2.0" />
+			<dependency id="NerdyDuck.Collections" version="1.0.2" />
 		</dependencies>
 		<references></references>
 		<tags>schedule task interval daily weekly monthly uwp desktop</tags>
@@ -31,14 +32,10 @@
 		<!-- Dummy file to mark package usable for UAP also in VS package manager (actual targeting for UAP must be done using the ref and runtimes folders) -->
 		<file src="obj\Release\uap10.0\anyCPU\NerdyDuck.Scheduler.XML" target="lib\uap10.0\" />
 
-		<!-- Simple Txm for .Net 4.5 desktop version-->
-		<file src="obj\Release\net46\NerdyDuck.CodedExceptions.dll" target="lib\net46\" />
-		<file src="obj\Release\net46\NerdyDuck.Collections.dll" target="lib\net46\" />
+		<!-- Simple Txm for .Net 4.6 desktop version-->
 		<file src="obj\Release\net46\NerdyDuck.Scheduler.dll" target="lib\net46\" />
 		<file src="obj\Release\net46\NerdyDuck.Scheduler.pdb" target="lib\net46\" />
 		<file src="obj\Release\net46\NerdyDuck.Scheduler.XML" target="lib\net46\" />
-		<file src="obj\Release\net46\de-DE\NerdyDuck.CodedExceptions.resources.dll" target="lib\net46\de-DE\" />
-		<file src="obj\Release\net46\de-DE\NerdyDuck.Collections.resources.dll" target="lib\net46\de-DE\" />
 		<file src="obj\Release\net46\de-DE\NerdyDuck.Scheduler.resources.dll" target="lib\net46\de-DE\" />
 
 		<!-- Reference files for UAP design-time -->

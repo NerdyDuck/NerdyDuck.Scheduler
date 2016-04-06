@@ -107,7 +107,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleSchedulerAction.cs" />
     <Compile Include="Tests\AsyncActionSchedulerActionTest.cs" />
-    <Compile Include="Tests\ErrorsTest.cs" />
     <Compile Include="Tests\ScheduledActionBaseTest.cs" />
     <Compile Include="Tests\ScheduledTaskCompletedEventArgsTest.cs" />
     <Compile Include="Tests\ScheduledTaskStartingEventArgsTest.cs" />

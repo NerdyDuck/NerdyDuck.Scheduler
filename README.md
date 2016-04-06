@@ -27,7 +27,9 @@ For examples and a complete class reference, please see the [Wiki](../../wiki/).
 The project is licensed under the [Apache License, Version 2.0](LICENSE).
 
 #### History
-#####TBD / vNext / DAK
+#####2016-04-06 / v1.0.2 / DAK
+- Updated reference for [NerdyDuck.CodedExceptions](../NerdyDuck.CodedExceptions) to v1.2.0.
+- Updated reference for [NerdyDuck.Collections](../NerdyDuck.Collections) to v1.0.2.
 - Added deployment project to compile all projects and create/push the NuGet package in one go. Removed separate NuGet project. Removes also dependency on NuGet Packager Template.
 - Extracted file signing into its own reusable MSBuild target file.
 - Extracted resource generation for desktop project into its own reusable MSBuild target file.
@@ -35,7 +37,7 @@ The project is licensed under the [Apache License, Version 2.0](LICENSE).
 - Fixed bug in Package.tt so content files are included into NuGet package.
 
 ##### 2016-03-07 / v1.0.1 / DAK
-- Switched `IXmlSerializable` interfaces in `Schedule`, `ScheduledTask&lt;T&gt;` and `ScheduledActionBase` from public access to explicit interface implementation, where appropriate.
+- Switched `IXmlSerializable` interfaces in `Schedule`, `ScheduledTask(T)` and `ScheduledActionBase` from public access to explicit interface implementation, where appropriate.
 
 ##### 2016-02-26 / v1.0.0 / DAK
 - First release.
