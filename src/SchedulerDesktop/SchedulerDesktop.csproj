@@ -69,6 +69,9 @@
     </CodeAnalysisDictionary>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SchedulerUniversal\ErrorCodes.cs">
+      <Link>ErrorCodes.cs</Link>
+    </Compile>
     <Compile Include="..\SchedulerUniversal\ISchedulerAction.cs">
       <Link>ISchedulerAction.cs</Link>
     </Compile>

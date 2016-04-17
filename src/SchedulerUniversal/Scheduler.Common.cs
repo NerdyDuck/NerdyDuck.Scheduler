@@ -188,7 +188,7 @@ namespace NerdyDuck.Scheduler
 		{
 			if (timeout < TimeSpan.Zero)
 			{
-				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(0x1f), nameof(timeout), timeout, Properties.Resources.Scheduler_Stop_TimeoutNegative);
+				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(ErrorCodes.Scheduler_Stop_Negative), nameof(timeout), timeout, Properties.Resources.Scheduler_Stop_TimeoutNegative);
 			}
 
 			if (IsDisposed)
@@ -224,7 +224,7 @@ namespace NerdyDuck.Scheduler
 
 				if (!WaitResult)
 				{
-					throw new CodedTimeoutException(Errors.CreateHResult(0x20), Properties.Resources.Scheduler_Stop_Timeout);
+					throw new CodedTimeoutException(Errors.CreateHResult(ErrorCodes.Scheduler_Stop_TasksRunning), Properties.Resources.Scheduler_Stop_Timeout);
 				}
 			}
 		}
@@ -307,7 +307,7 @@ namespace NerdyDuck.Scheduler
 		{
 			if (interval < TimeSpan.Zero)
 			{
-				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(0x1e), nameof(interval), Properties.Resources.Scheduler_AssertInterval_Negative);
+				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(ErrorCodes.Scheduler_AssertInterval_Negative), nameof(interval), Properties.Resources.Scheduler_AssertInterval_Negative);
 			}
 		}
 

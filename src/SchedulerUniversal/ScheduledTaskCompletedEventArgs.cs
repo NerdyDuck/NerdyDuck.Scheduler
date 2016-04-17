@@ -104,7 +104,7 @@ namespace NerdyDuck.Scheduler
 		public ScheduledTaskCompletedEventArgs(ScheduledTask<T> task, bool isSuccess, bool isCanceled, Exception ex, object state)
 		{
 			if (task == null)
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x22), nameof(task));
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.ScheduledTaskCompletedEventArgs_ctor_TaskNull), nameof(task));
 
 			mTask = task;
 			mIsSuccess = isSuccess;

@@ -69,7 +69,7 @@ namespace NerdyDuck.Scheduler
 		public ScheduledTaskStartingEventArgs(ScheduledTask<T> task)
 		{
 			if (task == null)
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x21), nameof(task));
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.ScheduledTaskStartingEventArgs_ctor_TaskNull), nameof(task));
 
 			mTask = task;
 			mCancel = false;

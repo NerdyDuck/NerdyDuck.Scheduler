@@ -178,9 +178,9 @@ namespace NerdyDuck.Scheduler
 		public ScheduledTask(Schedule schedule, T action, bool isEnabled, DateTimeOffset? lastStartTime, DateTimeOffset? lastEndTime)
 		{
 			if (schedule == null)
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x1a), nameof(schedule));
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.ScheduledTask_ctor_ScheduleNull), nameof(schedule));
 			if (action == null)
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x1b), nameof(schedule));
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.ScheduledTask_ctor_ActionNull), nameof(schedule));
 
 			mSchedule = schedule;
 			mAction = action;
@@ -216,7 +216,7 @@ namespace NerdyDuck.Scheduler
 		{
 			AssertActive();
 			if (schedule == null)
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x1c), nameof(schedule));
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.ScheduledTask_Reschedule_ScheduleNull), nameof(schedule));
 			mSchedule = schedule;
 			if (mSchedule.ScheduleType == ScheduleType.OneTime)
 				mLastStartTime = mLastEndTime = null;
@@ -347,7 +347,7 @@ namespace NerdyDuck.Scheduler
 		{
 			if (reader == null)
 			{
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x16), nameof(reader));
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.ScheduledTask_ReadXml_ArgNull), nameof(reader));
 			}
 
 			string root = reader.Name;
@@ -387,12 +387,12 @@ namespace NerdyDuck.Scheduler
 
 			if (mSchedule == null)
 			{
-				throw new CodedXmlException(Errors.CreateHResult(0x18), string.Format(Properties.Resources.ScheduledTask_ReadXml_MissingElement, Schedule.RootName));
+				throw new CodedXmlException(Errors.CreateHResult(ErrorCodes.ScheduledTask_ReadXml_ScheduleNull), string.Format(Properties.Resources.ScheduledTask_ReadXml_MissingElement, Schedule.RootName));
 			}
 
 			if (mAction == null)
 			{
-				throw new CodedXmlException(Errors.CreateHResult(0x19), string.Format(Properties.Resources.ScheduledTask_ReadXml_MissingElement, ScheduledActionBase.RootName));
+				throw new CodedXmlException(Errors.CreateHResult(ErrorCodes.ScheduledTask_ReadXml_ActionNull), string.Format(Properties.Resources.ScheduledTask_ReadXml_MissingElement, ScheduledActionBase.RootName));
 			}
 			mNextDueDate = mSchedule.GetNextDueDate(DateTimeOffset.Now, mLastStartTime);
 			IsInitialized = true;
@@ -406,7 +406,7 @@ namespace NerdyDuck.Scheduler
 		{
 			if (writer == null)
 			{
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x17), nameof(writer));
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.ScheduledTask_WriteXml_ArgNull), nameof(writer));
 			}
 
 			writer.WriteAttributeString(IsEnabledName, XmlConvert.ToString(mIsEnabled));
@@ -435,7 +435,7 @@ namespace NerdyDuck.Scheduler
 				throw new ObjectDisposedException(this.ToString());
 
 			if (!IsInitialized)
-				throw new CodedInvalidOperationException(Errors.CreateHResult(0x1c), Properties.Resources.ScheduledTask_AssertActive_NotInit);
+				throw new CodedInvalidOperationException(Errors.CreateHResult(ErrorCodes.ScheduledTask_AssertActive_NotInitialized), Properties.Resources.ScheduledTask_AssertActive_NotInit);
 		}
 		#endregion
 		#endregion

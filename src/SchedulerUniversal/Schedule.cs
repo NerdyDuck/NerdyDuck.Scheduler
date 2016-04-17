@@ -373,12 +373,12 @@ namespace NerdyDuck.Scheduler
 		{
 			if (reader == null)
 			{
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x01), nameof(reader));
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.Schedule_ReadXml_ArgNull), nameof(reader));
 			}
 
 			if (!reader.MoveToFirstAttribute())
 			{
-				throw new CodedXmlException(Errors.CreateHResult(0x22), Properties.Resources.Schedule_ReadXml_NoAttributes);
+				throw new CodedXmlException(Errors.CreateHResult(ErrorCodes.ScheduledTask_ReadXml_NoAttributes), Properties.Resources.Schedule_ReadXml_NoAttributes);
 			}
 
 			bool TypeFound = false;
@@ -392,7 +392,7 @@ namespace NerdyDuck.Scheduler
 
 			if (!TypeFound)
 			{
-				throw new CodedXmlException(Errors.CreateHResult(0x06), string.Format(Properties.Resources.Schedule_ReadXml_MissingAttribute, TypeName));
+				throw new CodedXmlException(Errors.CreateHResult(ErrorCodes.Schedule_ReadXml_TypeMissing), string.Format(Properties.Resources.Schedule_ReadXml_MissingAttribute, TypeName));
 			}
 
 			AssertProperties();
@@ -406,7 +406,7 @@ namespace NerdyDuck.Scheduler
 		{
 			if (writer == null)
 			{
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x07), nameof(writer));
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.Schedule_WriteXml_ArgNull), nameof(writer));
 			}
 
 			AssertInitialized();
@@ -514,7 +514,7 @@ namespace NerdyDuck.Scheduler
 					AssertScheduledDateTime();
 					break;
 				default:
-					throw new CodedInvalidOperationException(Errors.CreateHResult(0x1d), Properties.Resources.Global_ScheduleType_None);
+					throw new CodedInvalidOperationException(Errors.CreateHResult(ErrorCodes.ScheduledTask_AssertProperties_TypeNone), Properties.Resources.Global_ScheduleType_None);
 			}
 			IsInitialized = true;
 		}
@@ -529,7 +529,7 @@ namespace NerdyDuck.Scheduler
 		{
 			if (!mScheduledDateTime.HasValue)
 			{
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x08), ScheduledDateTimeName);
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.Schedule_AssertScheduledDateTime_Null), ScheduledDateTimeName);
 			}
 		}
 		#endregion
@@ -543,11 +543,11 @@ namespace NerdyDuck.Scheduler
 		{
 			if (!mStartTimeOrInterval.HasValue)
 			{
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x09), IntervalName);
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.Schedule_AssertInterval_Null), IntervalName);
 			}
 			if (mStartTimeOrInterval.Value <= TimeSpan.Zero)
 			{
-				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(0x0f), IntervalName, Properties.Resources.Schedule_AssertTimeSpanInterval);
+				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(ErrorCodes.Schedule_AssertTimeSpanInterval_Negative), IntervalName, Properties.Resources.Schedule_AssertTimeSpanInterval);
 			}
 		}
 
@@ -562,11 +562,11 @@ namespace NerdyDuck.Scheduler
 		{
 			if (!mDayInMonthOrInterval.HasValue)
 			{
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x09), IntervalName);
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.Schedule_AssertInterval_Null), IntervalName);
 			}
 			if (mDayInMonthOrInterval.Value < 1)
 			{
-				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(0x12), IntervalName, Properties.Resources.Schedule_AssertDayMonthInterval);
+				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(ErrorCodes.Schedule_AssertDayMonthInterval_NotPositive), IntervalName, Properties.Resources.Schedule_AssertDayMonthInterval);
 			}
 		}
 		#endregion
@@ -580,11 +580,11 @@ namespace NerdyDuck.Scheduler
 		{
 			if (!mDayInMonthOrInterval.HasValue)
 			{
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x0c), DayInMonthName);
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.Schedule_AssertDayInMonth_Null), DayInMonthName);
 			}
 			if (mDayInMonthOrInterval.Value < -31 || mDayInMonthOrInterval.Value > 31)
 			{
-				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(0x13), DayInMonthName, Properties.Resources.Schedule_AssertDayInMonth);
+				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(ErrorCodes.Schedule_AssertDayInMonth_OutOfRange), DayInMonthName, Properties.Resources.Schedule_AssertDayInMonth);
 			}
 		}
 		#endregion
@@ -598,11 +598,11 @@ namespace NerdyDuck.Scheduler
 		{
 			if (!mWeekdays.HasValue)
 			{
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x0a), WeekdaysName);
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.Schedule_AssertWeekdays_Null), WeekdaysName);
 			}
 			if (mWeekdays.Value == Scheduler.Weekdays.None)
 			{
-				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(0x10), WeekdaysName, Properties.Resources.Schedule_AssertWeekDay_NoWeekDay);
+				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(ErrorCodes.Schedule_AssertWeekdays_NoWeekdays), WeekdaysName, Properties.Resources.Schedule_AssertWeekDay_NoWeekDay);
 			}
 		}
 		#endregion
@@ -616,15 +616,15 @@ namespace NerdyDuck.Scheduler
 		{
 			if (!mWeekdays.HasValue)
 			{
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x0a), WeekdaysName);
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.Schedule_AssertWeekdays_Null), WeekdaysName);
 			}
 			if (mWeekdays.Value == NerdyDuck.Scheduler.Weekdays.None)
 			{
-				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(0x10), WeekdaysName, Properties.Resources.Schedule_AssertWeekDay_NoWeekDay);
+				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(ErrorCodes.Schedule_AssertWeekdays_NoWeekdays), WeekdaysName, Properties.Resources.Schedule_AssertWeekDay_NoWeekDay);
 			}
 			if (!OnlyOneFlagSet((int)mWeekdays.Value))
 			{
-				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(0x15), IntervalName, Properties.Resources.Schedule_AssertWeekDay_TooManyWeekDays);
+				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(ErrorCodes.Schedule_AssertWeekDay_OutOfRange), IntervalName, Properties.Resources.Schedule_AssertWeekDay_TooManyWeekDays);
 			}
 		}
 		#endregion
@@ -638,11 +638,11 @@ namespace NerdyDuck.Scheduler
 		{
 			if (!mStartTimeOrInterval.HasValue)
 			{
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x0b), StartTimeName);
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.Schedule_AssertStartTime_Null), StartTimeName);
 			}
 			if (mStartTimeOrInterval.Value < TimeSpan.Zero || mStartTimeOrInterval.Value >= OneDay)
 			{
-				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(0x11), StartTimeName, Properties.Resources.Schedule_AssertStartTime);
+				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(ErrorCodes.Schedule_AssertStartTime_OutOfRange), StartTimeName, Properties.Resources.Schedule_AssertStartTime);
 			}
 		}
 		#endregion
@@ -656,11 +656,11 @@ namespace NerdyDuck.Scheduler
 		{
 			if (!mMonths.HasValue)
 			{
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x0d), MonthsName);
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.Schedule_AssertMonths_Null), MonthsName);
 			}
 			if (mMonths.Value == NerdyDuck.Scheduler.Months.None)
 			{
-				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(0x14), MonthsName, Properties.Resources.Schedule_AssertMonths_NoMonths);
+				throw new CodedArgumentOutOfRangeException(Errors.CreateHResult(ErrorCodes.Schedule_AssertMonths_NoMonths), MonthsName, Properties.Resources.Schedule_AssertMonths_NoMonths);
 			}
 		}
 		#endregion
@@ -674,7 +674,7 @@ namespace NerdyDuck.Scheduler
 		{
 			if (!mWeekInMonth.HasValue)
 			{
-				throw new CodedArgumentNullException(Errors.CreateHResult(0x0e), WeekInMonthName);
+				throw new CodedArgumentNullException(Errors.CreateHResult(ErrorCodes.Schedule_AssertWeekInMonth_Null), WeekInMonthName);
 			}
 		}
 		#endregion
@@ -687,7 +687,7 @@ namespace NerdyDuck.Scheduler
 		{
 			if (!IsInitialized)
 			{
-				throw new CodedInvalidOperationException(Errors.CreateHResult(0x16), Properties.Resources.Schedule_AssertInitialized);
+				throw new CodedInvalidOperationException(Errors.CreateHResult(ErrorCodes.Schedule_AssertInitialized_Failed), Properties.Resources.Schedule_AssertInitialized);
 			}
 		}
 		#endregion
@@ -1111,7 +1111,7 @@ namespace NerdyDuck.Scheduler
 			switch (name)
 			{
 				case TypeName:
-					mScheduleType = ParseEnumAttribute<ScheduleType>(value, Errors.CreateHResult(0x02), name);
+					mScheduleType = ParseEnumAttribute<ScheduleType>(value, Errors.CreateHResult(ErrorCodes.Schedule_ParseAttribute_TypeInvalid), name);
 					TypeFound = true;
 					break;
 				case ScheduledDateTimeName:
@@ -1123,7 +1123,7 @@ namespace NerdyDuck.Scheduler
 					break;
 				case WeekdayName:
 				case WeekdaysName:
-					mWeekdays = ParseEnumAttribute<Weekdays>(value, Errors.CreateHResult(0x03), name);
+					mWeekdays = ParseEnumAttribute<Weekdays>(value, Errors.CreateHResult(ErrorCodes.Schedule_ParseAttribute_WeekDaysInvalid), name);
 					break;
 				case IntervalDaysName:
 				case IntervalWeeksName:
@@ -1131,10 +1131,10 @@ namespace NerdyDuck.Scheduler
 					mDayInMonthOrInterval = XmlConvert.ToInt16(value);
 					break;
 				case MonthsName:
-					mMonths = ParseEnumAttribute<Months>(value, Errors.CreateHResult(0x04), name);
+					mMonths = ParseEnumAttribute<Months>(value, Errors.CreateHResult(ErrorCodes.Schedule_ParseAttribute_MonthsInvalid), name);
 					break;
 				case WeekInMonthName:
-					mWeekInMonth = ParseEnumAttribute<WeekInMonth>(value, Errors.CreateHResult(0x05), name);
+					mWeekInMonth = ParseEnumAttribute<WeekInMonth>(value, Errors.CreateHResult(ErrorCodes.Schedule_ParseAttribute_WeekInMonthInvalid), name);
 					break;
 			}
 			return TypeFound;

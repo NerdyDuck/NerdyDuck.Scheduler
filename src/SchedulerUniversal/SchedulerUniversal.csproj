@@ -132,6 +132,7 @@
     <EmbeddedResource Include="Scheduler.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ErrorCodes.cs" />
     <Compile Include="ISchedulerAction.cs" />
     <Compile Include="Months.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

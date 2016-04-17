@@ -9,6 +9,7 @@ This project provides a set of base classes to create a scheduler hosted within 
 
 #### Dependencies
 The project uses the following NuGet packages that are either found on NuGet.org or my own feed (see below):
+
 - NerdyDuck.CodedExceptions
 - NerdyDuck.Collections
 
@@ -27,6 +28,12 @@ For examples and a complete class reference, please see the [Wiki](../../wiki/).
 The project is licensed under the [Apache License, Version 2.0](LICENSE).
 
 #### History
+#####2016-04-17 / v1.0.3 / DAK
+- Updated reference for [NerdyDuck.CodedExceptions](../NerdyDuck.CodedExceptions) to v1.2.1.
+- Updated reference for [NerdyDuck.Collections](../NerdyDuck.Collections) to v1.0.3.
+- Switched internal error codes from integers to `ErrorCodes` enumeration.
+- Universal project compiled against Microsoft.NETCore.UniversalWindowsPlatform 5.1.0 .
+
 #####2016-04-06 / v1.0.2 / DAK
 - Updated reference for [NerdyDuck.CodedExceptions](../NerdyDuck.CodedExceptions) to v1.2.0.
 - Updated reference for [NerdyDuck.Collections](../NerdyDuck.Collections) to v1.0.2.
