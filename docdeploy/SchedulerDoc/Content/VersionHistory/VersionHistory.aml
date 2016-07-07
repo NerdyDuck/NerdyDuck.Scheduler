@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<topic id="b53d6ae4-6dc3-4673-990a-0d8dbf19ba9d" revisionNumber="1">
+<topic id="7c36b959-23b7-4a23-9740-c8f4c9cb1d87}" revisionNumber="5">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
 			<para>The topics in this section describe the various changes made to the NerdyDuck.Scheduler library over the life of the project.</para>
@@ -11,7 +11,12 @@
 				<list class="bullet">
 					<listItem>
 						<para>
-							<link xlink:href="21b8ebba-abfa-48be-bfb6-cd62fddcc07a" />
+							<link xlink:href="dc1c1244-1370-4543-9bfd-8e2e5a75cc62" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="b53d6ae4-6dc3-4673-990a-0d8dbf19ba9d" />
 						</para>
 					</listItem>
 					<listItem>

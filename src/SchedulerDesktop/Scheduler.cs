@@ -120,6 +120,7 @@ namespace NerdyDuck.Scheduler
 					{
 						tasks.Remove(Parameters.Item1);
 					}
+					Parameters.Item1.UpdateSchedule(DateTimeOffset.Now);
 					Parameters.Item1.IsScheduled = false;
 					Parameters.Item2.Source.Dispose();
 				}

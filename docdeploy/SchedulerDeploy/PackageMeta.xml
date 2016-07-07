@@ -33,6 +33,7 @@
 		<authors>Daniel Kopp</authors>
 		<description>This library provides a set of base classes to create a scheduler hosted within an application. The actions executed by a scheduled task are tailored to the specific application. The scheduler offers different task schedules, like regular intervals, daily, weekly, monthly or one-time occurrences. The tasks are executed on the default thread pool.</description>
 		<releaseNotes>
+			v1.0.4: Fixed bug that prohibited proper rescheduling of tasks after completion.
 			v1.0.3: Updated library references.
 			v1.0.2: Updated library references.
 			v1.0.1: Switched IXmlSerializable interfaces in Schedule, ScheduledTask(T) and ScheduledActionBase from public access to explicit interface implementation, where appropriate.

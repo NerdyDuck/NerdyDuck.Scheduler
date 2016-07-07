@@ -113,6 +113,7 @@ namespace NerdyDuck.Scheduler
 							{
 								OnTaskCompleted(task, sa);
 								SpinWait.SpinUntil(() => { return ScheduledTasks.Remove(task); }, 100);
+								task.UpdateSchedule(DateTimeOffset.Now);
 								task.IsScheduled = false;
 								sa.Operation.Close();
 							}

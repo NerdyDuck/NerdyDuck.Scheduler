@@ -28,6 +28,8 @@ For examples and a complete class reference, please see the [Wiki](../../wiki/).
 The project is licensed under the [Apache License, Version 2.0](LICENSE).
 
 #### History
+#####2016-07-07 / v1.0.4 / DAK
+- Fixed bug that prohibited proper rescheduling of tasks after completion.
 #####2016-04-17 / v1.0.3 / DAK
 - Updated reference for [NerdyDuck.CodedExceptions](../NerdyDuck.CodedExceptions) to v1.2.1.
 - Updated reference for [NerdyDuck.Collections](../NerdyDuck.Collections) to v1.0.3.
