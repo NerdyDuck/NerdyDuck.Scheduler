@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+  <PropertyGroup Label="Compilation">
+    <IsTestProject>false</IsTestProject>
+    <OutputType>Library</OutputType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DefineTrace>true</DefineTrace>
+    <DeployPath>$(MSBuildThisFileDirectory)../deploy/$(Configuration)/</DeployPath>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+  </PropertyGroup>
+  <PropertyGroup Label="Assembly Signing">
+    <SignAssembliesAndPackage>false</SignAssembliesAndPackage>
+  </PropertyGroup>
+	<Import Project="$([MSBuild]::GetPathOfFileAbove('signing.props', '$(MSBuildThisFileDirectory)../'))" Condition="$([MSBuild]::GetPathOfFileAbove('signing.props', '$(MSBuildThisFileDirectory)../')) != ''" />
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <SignAssembliesAndPackage>false</SignAssembliesAndPackage>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <CreateGitHubZip>true</CreateGitHubZip>
+    <DefineDebug>true</DefineDebug>
+    <DebugType>Full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <CreateGitHubZip>true</CreateGitHubZip>
+    <DefineDebug>false</DefineDebug>
+    <DebugType>Portable</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Label="NuGet package settings">
+    <IsPackable>true</IsPackable>
+    <PackageOutputPath>$(DeployPath)NuGet/</PackageOutputPath>
+    <MinClientVersion>4.6</MinClientVersion>
+    <Authors>Daniel Kopp</Authors>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>NerdyDuck.Scheduler-64x64.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/NerdyDuck/NerdyDuck.Scheduler</PackageProjectUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+  <PropertyGroup Label="Github Release Zips">
+    <ZipOutputPath>$(DeployPath)Zip/</ZipOutputPath>
+  </PropertyGroup>
+  <ItemGroup Label="NuGet package icon">
+    <None Include="$(MSBuildThisFileDirectory)../media/NerdyDuck.Scheduler-64x64.png" Pack="true" PackagePath="\">
+      <Link>NerdyDuck.Scheduler-64x64.png</Link>
+    </None>
+  </ItemGroup>
+</Project>

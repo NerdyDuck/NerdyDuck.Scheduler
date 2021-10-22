@@ -34,8 +34,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{2DF0E2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scheduler", "src\Scheduler\Scheduler.csproj", "{B4D3B305-FA8B-47F9-9BEB-099521250EDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulerDesktop", "src\SchedulerDesktop\SchedulerDesktop.csproj", "{CF979BFE-8804-48D4-8A0E-58E875916D25}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulerUniversalTests", "test\SchedulerUniversalTests\SchedulerUniversalTests.csproj", "{FF3B2717-7829-4A3D-8CAE-E6CC225748B5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulerDesktopTests", "test\SchedulerDesktopTests\SchedulerDesktopTests.csproj", "{125881FD-4CDB-4A85-BC65-AE238A773976}"
@@ -50,7 +48,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B4D3B305-FA8B-47F9-9BEB-099521250EDA} = {C74E08A8-2D19-4325-9381-06802FE9E4CC}
-		{CF979BFE-8804-48D4-8A0E-58E875916D25} = {C74E08A8-2D19-4325-9381-06802FE9E4CC}
 		{FF3B2717-7829-4A3D-8CAE-E6CC225748B5} = {6B204F2F-1D43-411B-AF3F-7E1E96B380DB}
 		{125881FD-4CDB-4A85-BC65-AE238A773976} = {6B204F2F-1D43-411B-AF3F-7E1E96B380DB}
 	EndGlobalSection

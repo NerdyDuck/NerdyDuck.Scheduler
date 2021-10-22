@@ -1,0 +1,5 @@
+﻿# C# files
+[*.cs]
+# Expression-bodied members
+csharp_style_expression_bodied_methods = false:none
+dotnet_diagnostic.CA1707.severity=none
