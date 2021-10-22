@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="17.0">
+  <PropertyGroup Label="Compilation">
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>NerdyDuck.Tests.Scheduler</RootNamespace>
+    <AssemblyName>$(RootNamespace)</AssemblyName>
+    <DefineConstants>$(DefineConstants);NET50</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Label="Assembly info">
+    <Description>Unit test for NerdyDuck.Scheduler library</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Scheduler\Scheduler.csproj" />
+	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.7" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.7" />
+    <PackageReference Include="NerdyDuck.CodedExceptions" Version="2.0.0-rc.1" />
+  </ItemGroup>
+  <Import Project="..\Tests.Shared\Tests.Scheduler.projitems" Label="Shared" />
+  <ItemGroup>
+    <None Include=".codeclonesettings" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,6 @@
+<CodeCloneSettings>  
+  <Exclusions>  
+    <Namespace>NerdyDuck.Tests.Scheduler</Namespace>  
+    <Namespace>NerdyDuck.Tests.Scheduler.*</Namespace>  
+  </Exclusions>  
+</CodeCloneSettings>        

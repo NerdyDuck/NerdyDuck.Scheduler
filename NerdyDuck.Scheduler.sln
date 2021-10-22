@@ -28,27 +28,65 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "media", "media", "{59E8C3D2
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{2DF0E22A-3120-428B-BC78-D3892443E6C8}"
-	ProjectSection(SolutionItems) = preProject
-		shared\NerdyDuck.Logging.snk = shared\NerdyDuck.Scheduler.snk
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scheduler", "src\Scheduler\Scheduler.csproj", "{B4D3B305-FA8B-47F9-9BEB-099521250EDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulerUniversalTests", "test\SchedulerUniversalTests\SchedulerUniversalTests.csproj", "{FF3B2717-7829-4A3D-8CAE-E6CC225748B5}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Tests.Scheduler", "test\Scheduler\Tests.Shared\Tests.Scheduler.shproj", "{8EE576C1-D042-4BC0-BDA1-F0BE342F501A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulerDesktopTests", "test\SchedulerDesktopTests\SchedulerDesktopTests.csproj", "{125881FD-4CDB-4A85-BC65-AE238A773976}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Scheduler.Net48", "test\Scheduler\Tests.Net48\Tests.Scheduler.Net48.csproj", "{A72D191F-FA99-4F8F-BBE7-FDD83EAD82CC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Scheduler.Net50", "test\Scheduler\Tests.Net50\Tests.Scheduler.Net50.csproj", "{37F711B7-238C-4430-B1BF-7C2DF86923B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Scheduler.Net60", "test\Scheduler\Tests.Net60\Tests.Scheduler.Net60.csproj", "{016FF52A-1B1B-4AB3-97E2-63D03D36E844}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Scheduler.NetCore31", "test\Scheduler\Tests.NetCore31\Tests.Scheduler.NetCore31.csproj", "{9796045E-DC93-4CCA-BCD8-2EF5D25E8D05}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		test\Scheduler\Tests.Shared\Tests.Scheduler.projitems*{016ff52a-1b1b-4ab3-97e2-63d03d36e844}*SharedItemsImports = 5
+		test\Scheduler\Tests.Shared\Tests.Scheduler.projitems*{37f711b7-238c-4430-b1bf-7c2df86923b0}*SharedItemsImports = 5
+		test\Scheduler\Tests.Shared\Tests.Scheduler.projitems*{8ee576c1-d042-4bc0-bda1-f0be342f501a}*SharedItemsImports = 13
+		test\Scheduler\Tests.Shared\Tests.Scheduler.projitems*{9796045e-dc93-4cca-bcd8-2ef5d25e8d05}*SharedItemsImports = 5
+		test\Scheduler\Tests.Shared\Tests.Scheduler.projitems*{a72d191f-fa99-4f8f-bbe7-fdd83ead82cc}*SharedItemsImports = 5
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4D3B305-FA8B-47F9-9BEB-099521250EDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4D3B305-FA8B-47F9-9BEB-099521250EDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4D3B305-FA8B-47F9-9BEB-099521250EDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4D3B305-FA8B-47F9-9BEB-099521250EDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A72D191F-FA99-4F8F-BBE7-FDD83EAD82CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A72D191F-FA99-4F8F-BBE7-FDD83EAD82CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A72D191F-FA99-4F8F-BBE7-FDD83EAD82CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A72D191F-FA99-4F8F-BBE7-FDD83EAD82CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37F711B7-238C-4430-B1BF-7C2DF86923B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37F711B7-238C-4430-B1BF-7C2DF86923B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37F711B7-238C-4430-B1BF-7C2DF86923B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37F711B7-238C-4430-B1BF-7C2DF86923B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{016FF52A-1B1B-4AB3-97E2-63D03D36E844}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{016FF52A-1B1B-4AB3-97E2-63D03D36E844}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{016FF52A-1B1B-4AB3-97E2-63D03D36E844}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{016FF52A-1B1B-4AB3-97E2-63D03D36E844}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9796045E-DC93-4CCA-BCD8-2EF5D25E8D05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9796045E-DC93-4CCA-BCD8-2EF5D25E8D05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9796045E-DC93-4CCA-BCD8-2EF5D25E8D05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9796045E-DC93-4CCA-BCD8-2EF5D25E8D05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B4D3B305-FA8B-47F9-9BEB-099521250EDA} = {C74E08A8-2D19-4325-9381-06802FE9E4CC}
-		{FF3B2717-7829-4A3D-8CAE-E6CC225748B5} = {6B204F2F-1D43-411B-AF3F-7E1E96B380DB}
-		{125881FD-4CDB-4A85-BC65-AE238A773976} = {6B204F2F-1D43-411B-AF3F-7E1E96B380DB}
+		{8EE576C1-D042-4BC0-BDA1-F0BE342F501A} = {6B204F2F-1D43-411B-AF3F-7E1E96B380DB}
+		{A72D191F-FA99-4F8F-BBE7-FDD83EAD82CC} = {6B204F2F-1D43-411B-AF3F-7E1E96B380DB}
+		{37F711B7-238C-4430-B1BF-7C2DF86923B0} = {6B204F2F-1D43-411B-AF3F-7E1E96B380DB}
+		{016FF52A-1B1B-4AB3-97E2-63D03D36E844} = {6B204F2F-1D43-411B-AF3F-7E1E96B380DB}
+		{9796045E-DC93-4CCA-BCD8-2EF5D25E8D05} = {6B204F2F-1D43-411B-AF3F-7E1E96B380DB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {44F82F9E-7479-49F0-BEE1-1D5DCD554BA0}
 	EndGlobalSection
 EndGlobal

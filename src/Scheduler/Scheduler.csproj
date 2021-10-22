@@ -7,7 +7,7 @@
   </PropertyGroup>
   <PropertyGroup Label="Assembly info">
     <AssemblyTitle>NerdyDuck Scheduler</AssemblyTitle>
-    <Description>A task scheduler for .NET, with time schedules similar to Windows&reg; Task Scheduler.</Description>
+    <Description>A task scheduler for .NET, with time schedules similar to Windows(r) Task Scheduler.</Description>
   </PropertyGroup>
   <PropertyGroup Label="Code analysis">
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>

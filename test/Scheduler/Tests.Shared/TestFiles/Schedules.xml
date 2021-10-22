@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<debugModes>
+    <debugMode assemblyName="NerdyDuck.CodedExceptions, Culture=fr-fr" isEnabled="true" />
+    <debugMode assemblyName="NerdyDuck.CodedExceptions, Version=9.9.9.9" isEnabled="true" />
+    <debugMode assemblyName="NerdyDuck.CodedExceptions, PublicKeyToken=a1b2d3e4f567890c" isEnabled="false" />
+    <debugMode assemblyName="NerdyDuck.CodedExceptions" isEnabled="false" />
+    <debugMode assemblyName="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <debugMode assemblyName="System.Data, Version=4.0.0.1, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <debugMode assemblyName="System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+</debugModes>
