@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="AddFileWrites" BeforeTargets="Build">
+    <ItemGroup>
+      <FileWrites Include="$(OutputPath)testhost.dll.config" />
+      <FileWrites Include="$(OutputPath)**/*.json" />
+    </ItemGroup>
+  </Target>
+  <Target Name="CopyExtraFiles" AfterTargets="Build" DependsOnTargets="Build">
+    <ItemGroup>
+      <SourceFiles Include="$(OutputPath)$(AssemblyName).dll.config" />
+      <SourceFiles Include="$(OutputPath)TestFiles/Schedules.json" />
+    </ItemGroup>
+    <ItemGroup>
+      <TargetFiles Include="$(OutputPath)testhost.dll.config" />
+      <TargetFiles Include="$(OutputPath)Schedules.json" />
+    </ItemGroup>
+    <!-- Copy default config files into the working directory for the tests, so they can be found be the default 'Load' methods. 
+    Rename the app.config file, so it matches the name of the executing assembly (testhost.exe). -->
+    <Copy SourceFiles="@(SourceFiles)" DestinationFiles="@(TargetFiles)" />
+  </Target>
+</Project>

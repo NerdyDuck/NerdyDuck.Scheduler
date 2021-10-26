@@ -1,0 +1,9 @@
+﻿{
+    "NerdyDuck.CodedExceptions, Culture=fr-fr" : true,
+    "NerdyDuck.CodedExceptions, Version=9.9.9.9" : true,
+    "NerdyDuck.CodedExceptions, PublicKeyToken=a1b2d3e4f567890c" : false,
+    "NerdyDuck.CodedExceptions" : false,
+    "mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" : true,
+    "System.Data, Version=4.0.0.1, Culture=neutral, PublicKeyToken=b77a5c561934e089" : true,
+    "System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" :  true
+}

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="17.0">
+  <PropertyGroup Label="Compilation">
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>NerdyDuck.Tests.Scheduler.Configuration</RootNamespace>
+    <AssemblyName>$(RootNamespace)</AssemblyName>
+    <DefineConstants>$(DefineConstants);NET50;NET60</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Label="Assembly info">
+    <Description>Unit test for NerdyDuck.Scheduler.Configuration library</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Scheduler\Scheduler.csproj" />
+    <ProjectReference Include="..\..\..\src\Scheduler.Configuration.AppConfig\Scheduler.Configuration.AppConfig.csproj" />
+    <ProjectReference Include="..\..\..\src\Scheduler.Configuration.ConfigSection\Scheduler.Configuration.ConfigSection.csproj" />
+    <ProjectReference Include="..\..\..\src\Scheduler.Configuration.Json\Scheduler.Configuration.Json.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.7" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.7" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0-rc.2.21480.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0-rc.2.21480.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0-rc.2.21480.5" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0-rc.2.21480.5" />
+  </ItemGroup>
+  <Import Project="..\Tests.Shared\Tests.Scheduler.Configuration.projitems" Label="Shared" />
+  <ItemGroup>
+    <None Include=".codeclonesettings" />
+  </ItemGroup>
+</Project>

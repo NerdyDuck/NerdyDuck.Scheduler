@@ -3,10 +3,10 @@
   <PropertyGroup>
     <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>eb493081-e892-4ead-ba03-691d0876ff99</SharedGUID>
+    <SharedGUID>55f869b0-a749-4587-a9c5-14765876d4dc</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>NerdyDuck.Tests.Scheduler</Import_RootNamespace>
+    <Import_RootNamespace>Tests.Scheduler.Configuration</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)**/*.cs" />
@@ -15,5 +15,10 @@
     <Content Include="$(MSBuildThisFileDirectory)TestFiles\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
 </Project>
