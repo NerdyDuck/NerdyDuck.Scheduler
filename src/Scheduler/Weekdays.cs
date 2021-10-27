@@ -1,117 +1,113 @@
 ﻿#region Copyright
 /*******************************************************************************
- * <copyright file="WeekDays.cs" owner="Daniel Kopp">
- * Copyright 2015-2016 Daniel Kopp
+ * NerdyDuck.Scheduler - Task scheduler for .NET with variable schedules.
+ * 
+ * The MIT License (MIT)
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) Daniel Kopp, dak@nerdyduck.de
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * All rights reserved.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * </copyright>
- * <author name="Daniel Kopp" email="dak@nerdyduck.de" />
- * <assembly name="NerdyDuck.Scheduler">
- * Task scheduler for .NET with variable schedules.
- * </assembly>
- * <file name="WeekDays.cs" date="2016-02-02">
- * Specifies the days in a week.
- * </file>
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  ******************************************************************************/
 #endregion
 
-using System;
-using System.Runtime.Serialization;
+namespace NerdyDuck.Scheduler;
 
-namespace NerdyDuck.Scheduler
+/// <summary>
+/// Specifies the days in a week.
+/// </summary>
+/// <remarks>Unlike the <see cref="DayOfWeek"/> enumeration, the values of this enumeration can be combined.</remarks>
+[Serializable]
+[DataContract(Namespace = Schedule.Namespace)]
+[Flags]
+public enum Weekdays
 {
 	/// <summary>
-	/// Specifies the days in a week.
+	/// No weekday specified.
 	/// </summary>
-	/// <remarks>Unlike the <see cref="System.DayOfWeek"/> enumeration, the values of this enumeration can be combined.</remarks>
-#if WINDOWS_DESKTOP
-	[System.Serializable]
-#endif
-	[DataContract(Namespace = Schedule.Namespace)]
-	[Flags]
-	public enum Weekdays
-	{
-		/// <summary>
-		/// No weekday specified.
-		/// </summary>
-		[EnumMember]
-		None = 0x00,
+	[EnumMember]
+	None = 0x00,
 
-		/// <summary>
-		/// Monday is specified.
-		/// </summary>
-		[EnumMember]
-		Monday = 0x01,
+	/// <summary>
+	/// Monday is specified.
+	/// </summary>
+	[EnumMember]
+	Monday = 0x01,
 
-		/// <summary>
-		/// Tuesday is specified.
-		/// </summary>
-		[EnumMember]
-		Tuesday = 0x02,
+	/// <summary>
+	/// Tuesday is specified.
+	/// </summary>
+	[EnumMember]
+	Tuesday = 0x02,
 
-		/// <summary>
-		/// Wednesday is specified.
-		/// </summary>
-		[EnumMember]
-		Wednesday = 0x04,
+	/// <summary>
+	/// Wednesday is specified.
+	/// </summary>
+	[EnumMember]
+	Wednesday = 0x04,
 
-		/// <summary>
-		/// Thursday is specified.
-		/// </summary>
-		[EnumMember]
-		Thursday = 0x08,
+	/// <summary>
+	/// Thursday is specified.
+	/// </summary>
+	[EnumMember]
+	Thursday = 0x08,
 
-		/// <summary>
-		/// Friday is specified.
-		/// </summary>
-		[EnumMember]
-		Friday = 0x10,
+	/// <summary>
+	/// Friday is specified.
+	/// </summary>
+	[EnumMember]
+	Friday = 0x10,
 
-		/// <summary>
-		/// Saturday is specified.
-		/// </summary>
-		[EnumMember]
-		Saturday = 0x20,
+	/// <summary>
+	/// Saturday is specified.
+	/// </summary>
+	[EnumMember]
+	Saturday = 0x20,
 
-		/// <summary>
-		/// Sunday is specified.
-		/// </summary>
-		[EnumMember]
-		Sunday = 0x40,
+	/// <summary>
+	/// Sunday is specified.
+	/// </summary>
+	[EnumMember]
+	Sunday = 0x40,
 
-		/// <summary>
-		/// Monday through Friday is specified.
-		/// </summary>
-		[EnumMember]
-		MondayToFriday = 0x1f,
+	/// <summary>
+	/// Monday through Friday is specified.
+	/// </summary>
+	[EnumMember]
+	MondayToFriday = 0x1f,
 
-		/// <summary>
-		/// Monday through Saturday is specified.
-		/// </summary>
-		[EnumMember]
-		MondayToSaturday = 0x3f,
+	/// <summary>
+	/// Monday through Saturday is specified.
+	/// </summary>
+	[EnumMember]
+	MondayToSaturday = 0x3f,
 
-		/// <summary>
-		/// Saturday and Sunday is specified.
-		/// </summary>
-		[EnumMember]
-		Weekend = 0x60,
+	/// <summary>
+	/// Saturday and Sunday is specified.
+	/// </summary>
+	[EnumMember]
+	Weekend = 0x60,
 
-		/// <summary>
-		/// All days are specified.
-		/// </summary>
-		[EnumMember]
-		All = 0x7f
-
-	}
+	/// <summary>
+	/// All days are specified.
+	/// </summary>
+	[EnumMember]
+	All = 0x7f
 }

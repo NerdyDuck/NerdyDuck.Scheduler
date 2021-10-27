@@ -34,6 +34,7 @@ global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using Microsoft.VisualStudio.TestTools.UnitTesting;
 global using NerdyDuck.CodedExceptions;
+global using NerdyDuck.Scheduler;
 #if NET50
 global using System.Buffers;
 #endif

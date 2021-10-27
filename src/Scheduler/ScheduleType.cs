@@ -1,84 +1,81 @@
 ﻿#region Copyright
 /*******************************************************************************
- * <copyright file="ScheduleType.cs" owner="Daniel Kopp">
- * Copyright 2015-2016 Daniel Kopp
+ * NerdyDuck.Scheduler - Task scheduler for .NET with variable schedules.
+ * 
+ * The MIT License (MIT)
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) Daniel Kopp, dak@nerdyduck.de
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * All rights reserved.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * </copyright>
- * <author name="Daniel Kopp" email="dak@nerdyduck.de" />
- * <assembly name="NerdyDuck.Scheduler">
- * Task scheduler for .NET with variable schedules.
- * </assembly>
- * <file name="ScheduleType.cs" date="2016-02-02">
- * Specifies the type of schedule for a task.
- * </file>
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  ******************************************************************************/
 #endregion
 
-using System;
-using System.Runtime.Serialization;
+namespace NerdyDuck.Scheduler;
 
-namespace NerdyDuck.Scheduler
+/// <summary>
+/// Specifies the type of schedule for a task.
+/// </summary>
+[Serializable]
+[DataContract(Namespace = Schedule.Namespace)]
+public enum ScheduleType
 {
 	/// <summary>
-	/// Specifies the type of schedule for a task.
+	/// The task will not run. Do not use.
 	/// </summary>
-#if WINDOWS_DESKTOP
-	[System.Serializable]
-#endif
-	[DataContract(Namespace = Schedule.Namespace)]
-	public enum ScheduleType
-	{
-		/// <summary>
-		/// The task will not run. Do not use.
-		/// </summary>
-		[EnumMember]
-		None = 0,
+	[EnumMember]
+	None = 0,
 
-		/// <summary>
-		/// The task will only run once.
-		/// </summary>
-		[EnumMember]
-		OneTime = 1,
+	/// <summary>
+	/// The task will only run once.
+	/// </summary>
+	[EnumMember]
+	OneTime = 1,
 
-		/// <summary>
-		/// The task will run daily (or after a set number of days) at a specific time.
-		/// </summary>
-		[EnumMember]
-		Daily = 2,
+	/// <summary>
+	/// The task will run daily (or after a set number of days) at a specific time.
+	/// </summary>
+	[EnumMember]
+	Daily = 2,
 
-		/// <summary>
-		/// The task will run weekly (or after a set number of weeks) at a specified weekday and time.
-		/// </summary>
-		[EnumMember]
-		Weekly = 3,
+	/// <summary>
+	/// The task will run weekly (or after a set number of weeks) at a specified weekday and time.
+	/// </summary>
+	[EnumMember]
+	Weekly = 3,
 
-		/// <summary>
-		/// The task will run every month (or a selection of months) at a specified weekday (or its n-th occurrence in the month) and time.
-		/// </summary>
-		[EnumMember]
-		MonthlyWeekday = 4,
+	/// <summary>
+	/// The task will run every month (or a selection of months) at a specified weekday (or its n-th occurrence in the month) and time.
+	/// </summary>
+	[EnumMember]
+	MonthlyWeekday = 4,
 
-		/// <summary>
-		/// The task will run every month (or a selection of months) at a specified day of the month, and time.
-		/// </summary>
-		[EnumMember]
-		MonthlyDay = 5,
+	/// <summary>
+	/// The task will run every month (or a selection of months) at a specified day of the month, and time.
+	/// </summary>
+	[EnumMember]
+	MonthlyDay = 5,
 
-		/// <summary>
-		/// The task will run in a specified interval, at specified weekdays.
-		/// </summary>
-		[EnumMember]
-		Interval = 6
-	}
+	/// <summary>
+	/// The task will run in a specified interval, at specified weekdays.
+	/// </summary>
+	[EnumMember]
+	Interval = 6
 }

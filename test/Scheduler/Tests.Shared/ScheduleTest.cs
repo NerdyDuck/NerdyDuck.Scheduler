@@ -1,42 +1,34 @@
 ﻿#region Copyright
 /*******************************************************************************
- * <copyright file="ScheduleTest.cs" owner="Daniel Kopp">
- * Copyright 2015-2016 Daniel Kopp
+ * NerdyDuck.Tests.Scheduler - Unit tests for the
+ * NerdyDuck.Scheduler assembly
+ * 
+ * The MIT License (MIT)
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) Daniel Kopp, dak@nerdyduck.de
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * All rights reserved.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * </copyright>
- * <author name="Daniel Kopp" email="dak@nerdyduck.de" />
- * <assembly name="NerdyDuck.Tests.Scheduler">
- * Unit tests for NerdyDuck.Scheduler assembly.
- * </assembly>
- * <file name="ScheduleTest.cs" date="2016-02-19">
- * Contains test methods to test the
- * NerdyDuck.Scheduler.Schedule class.
- * </file>
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  ******************************************************************************/
 #endregion
 
-#if WINDOWS_UWP
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-#endif
-#if WINDOWS_DESKTOP
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics.CodeAnalysis;
-#endif
-using NerdyDuck.CodedExceptions;
-using NerdyDuck.Scheduler;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
@@ -46,9 +38,7 @@ namespace NerdyDuck.Tests.Scheduler
 	/// <summary>
 	/// Contains test methods to test the NerdyDuck.Scheduler.Schedule class.
 	/// </summary>
-#if WINDOWS_DESKTOP
 	[ExcludeFromCodeCoverage]
-#endif
 	[TestClass]
 	public class ScheduleTest
 	{
@@ -64,7 +54,6 @@ namespace NerdyDuck.Tests.Scheduler
 		private readonly DateTimeOffset NowDate1720 = new DateTimeOffset(2013, 6, 4, 17, 20, 0, TimeSpan.Zero); // Tuesday - After NowDate
 		private readonly DateTimeOffset TomorrowDate0820 = new DateTimeOffset(2013, 6, 5, 8, 20, 0, TimeSpan.Zero); // Wednesday - Day after NowDate at 8:20
 
-		#region OneTime
 		[TestMethod]
 		public void GetNextDueDate_OneTimeFuture_Success()
 		{
@@ -103,7 +92,6 @@ namespace NerdyDuck.Tests.Scheduler
 			}
 		}
 
-#if WINDOWS_DESKTOP
 		[TestMethod]
 		public void Ctor_SerializationInfoOneTime_Success()
 		{
@@ -113,10 +101,7 @@ namespace NerdyDuck.Tests.Scheduler
 			buffer.Dispose();
 			AssertEqual(s1, s2);
 		}
-#endif
-		#endregion
 
-		#region Interval
 		[TestMethod]
 		public void GetNextDueDate_IntervalFuture_Success()
 		{
@@ -179,7 +164,6 @@ namespace NerdyDuck.Tests.Scheduler
 			}
 		}
 
-#if WINDOWS_DESKTOP
 		[TestMethod]
 		public void Ctor_SerializationInfoInterval_Success()
 		{
@@ -189,10 +173,7 @@ namespace NerdyDuck.Tests.Scheduler
 			buffer.Dispose();
 			AssertEqual(s1, s2);
 		}
-#endif
-		#endregion
 
-		#region Daily
 		[TestMethod]
 		public void GetNextDueDate_DailyFuture1_Success()
 		{
@@ -247,7 +228,6 @@ namespace NerdyDuck.Tests.Scheduler
 			}
 		}
 
-#if WINDOWS_DESKTOP
 		[TestMethod]
 		public void Ctor_SerializationInfoDaily_Success()
 		{
@@ -257,10 +237,7 @@ namespace NerdyDuck.Tests.Scheduler
 			buffer.Dispose();
 			AssertEqual(s1, s2);
 		}
-#endif
-		#endregion
 
-		#region Weekly
 		[TestMethod]
 		public void GetNextDueDate_WeeklyFuture1_Success()
 		{
@@ -315,7 +292,6 @@ namespace NerdyDuck.Tests.Scheduler
 			}
 		}
 
-#if WINDOWS_DESKTOP
 		[TestMethod]
 		public void Ctor_SerializationInfoWeekly_Success()
 		{
@@ -325,10 +301,7 @@ namespace NerdyDuck.Tests.Scheduler
 			buffer.Dispose();
 			AssertEqual(s1, s2);
 		}
-#endif
-		#endregion
 
-		#region MonthlyDay
 		[TestMethod]
 		public void GetNextDueDate_MonthlyDayFuture1_Success()
 		{
@@ -391,7 +364,6 @@ namespace NerdyDuck.Tests.Scheduler
 			}
 		}
 
-#if WINDOWS_DESKTOP
 		[TestMethod]
 		public void Ctor_SerializationInfoMonthlyDay_Success()
 		{
@@ -401,10 +373,7 @@ namespace NerdyDuck.Tests.Scheduler
 			buffer.Dispose();
 			AssertEqual(s1, s2);
 		}
-#endif
-		#endregion
 
-		#region MonthlyWeekDay
 		[TestMethod]
 		public void GetNextDueDate_MonthlyWeekdaySecond_Success()
 		{
@@ -459,7 +428,6 @@ namespace NerdyDuck.Tests.Scheduler
 			}
 		}
 
-#if WINDOWS_DESKTOP
 		[TestMethod]
 		public void Ctor_SerializationInfoMonthlyWeekday_Success()
 		{
@@ -469,24 +437,17 @@ namespace NerdyDuck.Tests.Scheduler
 			buffer.Dispose();
 			AssertEqual(s1, s2);
 		}
-#endif
-		#endregion
 
-#if WINDOWS_DESKTOP
-		#region Serialization
 		[TestMethod]
 		public void GetObjectData_InfoNull_Error()
 		{
 			Schedule s1 = Schedule.CreateMonthlyWeekday(new TimeSpan(17, 20, 0), Weekdays.Sunday, Months.All, WeekInMonth.First);
-			CustomAssert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsException<ArgumentNullException>(() =>
 			{
 				s1.GetObjectData(null, new System.Runtime.Serialization.StreamingContext());
 			});
 		}
-		#endregion
-#endif
 
-		#region XmlSerializable
 		[TestMethod]
 		public void GetSchema_Success()
 		{
@@ -499,7 +460,7 @@ namespace NerdyDuck.Tests.Scheduler
 		{
 			Schedule schedule = new Schedule();
 
-			CustomAssert.ThrowsException<CodedArgumentNullException>(() =>
+			Assert.ThrowsException<CodedArgumentNullException>(() =>
 			{
 				((IXmlSerializable)schedule).ReadXml(null);
 			});
@@ -513,7 +474,7 @@ namespace NerdyDuck.Tests.Scheduler
 			using (XmlReader reader = XmlReader.Create(new StringReader(input)))
 			{
 				reader.ReadToFollowing("schedule");
-				CustomAssert.ThrowsException<CodedXmlException>(() =>
+				Assert.ThrowsException<CodedXmlException>(() =>
 				{
 					((IXmlSerializable)schedule).ReadXml(reader);
 				});
@@ -528,7 +489,7 @@ namespace NerdyDuck.Tests.Scheduler
 			using (XmlReader reader = XmlReader.Create(new StringReader(input)))
 			{
 				reader.ReadToFollowing("schedule");
-				CustomAssert.ThrowsException<CodedXmlException>(() =>
+				Assert.ThrowsException<CodedXmlException>(() =>
 				{
 					((IXmlSerializable)schedule).ReadXml(reader);
 				});
@@ -542,7 +503,7 @@ namespace NerdyDuck.Tests.Scheduler
 			using (XmlReader reader = XmlReader.Create(new StringReader(input)))
 			{
 				reader.ReadToFollowing("schedule");
-				CustomAssert.ThrowsException<CodedXmlException>(() =>
+				Assert.ThrowsException<CodedXmlException>(() =>
 				{
 					((IXmlSerializable)schedule).ReadXml(reader);
 				});
@@ -554,15 +515,12 @@ namespace NerdyDuck.Tests.Scheduler
 		{
 			Schedule schedule = Schedule.CreateOneTime(DateTimeOffset.Now);
 
-			CustomAssert.ThrowsException<CodedArgumentNullException>(() =>
+			Assert.ThrowsException<CodedArgumentNullException>(() =>
 			{
 				((IXmlSerializable)schedule).WriteXml(null);
 			});
 		}
 
-		#endregion
-
-		#region Create
 		[TestMethod]
 		public void Create_Success()
 		{
@@ -573,18 +531,16 @@ namespace NerdyDuck.Tests.Scheduler
 		[TestMethod]
 		public void Create_TypeNone_Error()
 		{
-			CustomAssert.ThrowsException<CodedInvalidOperationException>(() =>
+			Assert.ThrowsException<CodedInvalidOperationException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.None, null, null, null, null, null, null);
 			});
 		}
-		#endregion
 
-		#region Asserts
 		[TestMethod]
 		public void AssertScheduledDateTime_Error()
 		{
-			CustomAssert.ThrowsException<CodedArgumentNullException>(() =>
+			Assert.ThrowsException<CodedArgumentNullException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.OneTime, null, null, null, null, null, null);
 			});
@@ -593,12 +549,12 @@ namespace NerdyDuck.Tests.Scheduler
 		[TestMethod]
 		public void AssertTimeSpanInterval_Error()
 		{
-			CustomAssert.ThrowsException<CodedArgumentNullException>(() =>
+			Assert.ThrowsException<CodedArgumentNullException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.Interval, FutureDate, null, Weekdays.All, 1, null, null);
 			});
 
-			CustomAssert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
+			Assert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.Interval, FutureDate, TimeSpan.FromMinutes(-5.0), Weekdays.All, 1, null, null);
 			});
@@ -607,12 +563,12 @@ namespace NerdyDuck.Tests.Scheduler
 		[TestMethod]
 		public void AssertDayMonthInterval_Error()
 		{
-			CustomAssert.ThrowsException<CodedArgumentNullException>(() =>
+			Assert.ThrowsException<CodedArgumentNullException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.Daily, null, StartTime1720, Weekdays.All, null, null, null);
 			});
 
-			CustomAssert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
+			Assert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.Daily, null, StartTime1720, Weekdays.All, 0, null, null);
 			});
@@ -621,17 +577,17 @@ namespace NerdyDuck.Tests.Scheduler
 		[TestMethod]
 		public void AssertDayInMonth_Error()
 		{
-			CustomAssert.ThrowsException<CodedArgumentNullException>(() =>
+			Assert.ThrowsException<CodedArgumentNullException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.MonthlyDay, null, StartTime1720, Weekdays.All, null, Months.All, null);
 			});
 
-			CustomAssert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
+			Assert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.MonthlyDay, null, StartTime1720, Weekdays.All, -42, Months.All, null);
 			});
 
-			CustomAssert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
+			Assert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.MonthlyDay, null, StartTime1720, Weekdays.All, 42, Months.All, null);
 			});
@@ -640,17 +596,17 @@ namespace NerdyDuck.Tests.Scheduler
 		[TestMethod]
 		public void AssertWeekday_Error()
 		{
-			CustomAssert.ThrowsException<CodedArgumentNullException>(() =>
+			Assert.ThrowsException<CodedArgumentNullException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.Weekly, null, StartTime1720, null, 1, null, null);
 			});
 
-			CustomAssert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
+			Assert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.Weekly, null, StartTime1720, Weekdays.None, 1, null, null);
 			});
 
-			CustomAssert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
+			Assert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.Weekly, null, StartTime1720, Weekdays.Monday | Weekdays.Tuesday, 1, null, null);
 			});
@@ -659,12 +615,12 @@ namespace NerdyDuck.Tests.Scheduler
 		[TestMethod]
 		public void AssertWeekdays_Error()
 		{
-			CustomAssert.ThrowsException<CodedArgumentNullException>(() =>
+			Assert.ThrowsException<CodedArgumentNullException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.Daily, null, StartTime1720, null, 1, null, null);
 			});
 
-			CustomAssert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
+			Assert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.Daily, null, StartTime1720, Weekdays.None, 1, null, null);
 			});
@@ -673,17 +629,17 @@ namespace NerdyDuck.Tests.Scheduler
 		[TestMethod]
 		public void AssertStartTime_Error()
 		{
-			CustomAssert.ThrowsException<CodedArgumentNullException>(() =>
+			Assert.ThrowsException<CodedArgumentNullException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.Daily, null, null, Weekdays.All, 1, null, null);
 			});
 
-			CustomAssert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
+			Assert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.Daily, null, TimeSpan.FromMinutes(-5.0), Weekdays.All, 1, null, null);
 			});
 
-			CustomAssert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
+			Assert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.Daily, null, TimeSpan.FromHours(25), Weekdays.All, 1, null, null);
 			});
@@ -692,12 +648,12 @@ namespace NerdyDuck.Tests.Scheduler
 		[TestMethod]
 		public void AssertMonths_Error()
 		{
-			CustomAssert.ThrowsException<CodedArgumentNullException>(() =>
+			Assert.ThrowsException<CodedArgumentNullException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.MonthlyDay, null, StartTime1720, Weekdays.All, 1, null, null);
 			});
 
-			CustomAssert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
+			Assert.ThrowsException<CodedArgumentOutOfRangeException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.MonthlyDay, null, StartTime1720, Weekdays.All, 1, Months.None, null);
 			});
@@ -706,7 +662,7 @@ namespace NerdyDuck.Tests.Scheduler
 		[TestMethod]
 		public void AssertWeekInMonth_Error()
 		{
-			CustomAssert.ThrowsException<CodedArgumentNullException>(() =>
+			Assert.ThrowsException<CodedArgumentNullException>(() =>
 			{
 				Schedule schedule = Schedule.Create(ScheduleType.MonthlyWeekday, null, StartTime1720, Weekdays.Monday, null, Months.All, null);
 			});
@@ -715,15 +671,13 @@ namespace NerdyDuck.Tests.Scheduler
 		[TestMethod]
 		public void AssertInitialized_Error()
 		{
-			CustomAssert.ThrowsException<CodedInvalidOperationException>(() =>
+			Assert.ThrowsException<CodedInvalidOperationException>(() =>
 			{
 				Schedule schedule = new Schedule();
 				schedule.GetNextDueDate(NowDate, null);
 			});
 		}
-		#endregion
 
-		#region Private methods
 		private void AssertEqual(Schedule s1, Schedule s2)
 		{
 			Assert.AreEqual(s1.DayInMonthOrInterval.HasValue, s2.DayInMonthOrInterval.HasValue, "DayInMonthOrInterval");
@@ -753,6 +707,5 @@ namespace NerdyDuck.Tests.Scheduler
 				Assert.AreEqual(s1.WeekInMonth.Value, s2.WeekInMonth.Value, "WeekInMonth");
 
 		}
-		#endregion
 	}
 }
